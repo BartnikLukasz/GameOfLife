@@ -17,7 +17,7 @@ public:
 
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 
-    void drawCells(vector<vector<bool>> gameState);
+    void drawCells(vector<vector<bool>> gameState, short cellsInRow);
 
 };
 

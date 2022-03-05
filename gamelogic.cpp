@@ -1,15 +1,18 @@
 #include "gamelogic.h"
+#include "gamewindow.h"
 
 #include <vector>
 
 using namespace std;
+
+extern GameWindow * gameWindow;
 
 #define rows 20
 #define columns 20
 
 GameLogic::GameLogic()
 {
-
+    this->cellsInRow = 20; //TODO zmienić na wartość ustawialną
 }
 
 vector<vector<bool>> GameLogic::calculateNextStep(vector<vector<bool>> & currentState)
@@ -77,4 +80,10 @@ vector<vector<bool>> GameLogic::calculateNextStep(vector<vector<bool>> & current
     }
 
     return nextState;
+}
+
+void GameLogic::nextStep()
+{
+    this->gameState = calculateNextStep(this->gameState);
+    gameWindow->updateUI();
 }

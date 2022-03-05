@@ -1,6 +1,7 @@
 #include "gameoflifegraphicsscene.h"
 #include "gamewindow.h"
 
+#include <QGraphicsSceneMouseEvent>
 #include <QImage>
 #include <QPainter>
 #include <QPixmap>
@@ -28,12 +29,12 @@ GameOfLifeGraphicsScene::GameOfLifeGraphicsScene(QGraphicsScene *parent)
 
 void GameOfLifeGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    //TODO zmiana stanu danej komórki
+    gameWindow->toggleCell(event->scenePos().x(), event->scenePos().y(), this);
 }
 
 void GameOfLifeGraphicsScene::drawCells(vector<vector<bool>> gameState, short cellsInRow)
 {
-    short imageHeight = 400;
+    short imageHeight = 400; //TODO zmiana wielkości na ustawialną
     short imageWidth = 400;
 
     short cellSize = imageWidth / cellsInRow;

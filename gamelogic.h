@@ -11,6 +11,10 @@ public:
     GameLogic();
 
     vector<vector<bool>> calculateNextStep(vector<vector<bool>>& currentState); // calculating next step based on its current state
+    void nextStep();
+
+    vector<vector<bool>> gameState;
+    short cellsInRow;
 
 };
 
