@@ -1,6 +1,7 @@
 #include "gamewindow.h"
 
 #include <QApplication>
+#include <QGraphicsRectItem>
 
 int main(int argc, char *argv[])
 {
