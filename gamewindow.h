@@ -24,10 +24,16 @@ public:
 
     void updateUI();
 
+    void startGame();
+private slots:
+    void on_startButton_clicked();
+    void nextStep();
 
 private:
     Ui::GameWindow *ui;
     GameOfLifeGraphicsScene *board;
     QPixmap image;
+
+    bool gameActive;
 };
 #endif // GAMEWINDOW_H
