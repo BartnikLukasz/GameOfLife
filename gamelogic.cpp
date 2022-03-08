@@ -7,12 +7,12 @@ using namespace std;
 
 extern GameWindow * gameWindow;
 
-#define rows 20
-#define columns 20
+#define rows 60
+#define columns 40
 
 GameLogic::GameLogic()
 {
-    this->cellsInRow = 20; //TODO zmienić na wartość ustawialną
+    this->cellsInRow = 60; //TODO zmienić na wartość ustawialną
 }
 
 vector<vector<bool>> GameLogic::calculateNextStep(vector<vector<bool>> & currentState)
@@ -86,4 +86,9 @@ void GameLogic::nextStep()
 {
     this->gameState = calculateNextStep(this->gameState);
     gameWindow->updateUI();
+}
+
+void GameLogic::createBoard(short cellsInRow) {
+    this->gameState = vector<vector<bool>>(rows, vector<bool>(columns, false));
+    this->cellsInRow = cellsInRow;
 }

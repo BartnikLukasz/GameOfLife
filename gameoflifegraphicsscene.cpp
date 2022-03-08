@@ -34,18 +34,20 @@ void GameOfLifeGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void GameOfLifeGraphicsScene::drawCells(vector<vector<bool>> gameState, short cellsInRow)
 {
-    short imageHeight = 400; //TODO zmiana wielkości na ustawialną
-    short imageWidth = 400;
+    short imageHeight = 600; //TODO zmiana wielkości na ustawialną
+    short imageWidth = 1200;
 
     short cellSize = imageWidth / cellsInRow;
     short cellsInColumn = imageHeight / cellSize;
 
     QImage image(imageWidth, imageHeight, QImage::Format_RGB32);
 
-    QRgb aliveColor = qRgb(200, 200, 200);
-    QRgb deadColor = qRgb(50, 50, 50);
+    QRgb deadColor = qRgb(200, 200, 200);
+    QRgb aliveColor = qRgb(50, 50, 50);
 
     QPainter painter(&image);
+
+    painter.fillRect(0, 0, imageWidth, imageHeight, qRgb(255, 255, 255));
 
     /*painter.fillRect(0, 0, cellSize-2, cellSize-2, deadColor);
     painter.fillRect(0, cellSize, cellSize-2, (2*cellSize)-2, deadColor);
@@ -57,14 +59,17 @@ void GameOfLifeGraphicsScene::drawCells(vector<vector<bool>> gameState, short ce
 
         for(int j = 0; j < cellsInRow; j++) {
 
+            QRect *cell = new QRect(QPoint(i*cellSize, j*cellSize), QPoint(((i+1)*cellSize)-2, ((j+1)*cellSize)-2));
+
             if(gameState[i][j]) {
-                painter.fillRect(i*cellSize, j*cellSize, ((i+1)*cellSize)-2, ((j+1)*cellSize)-2, aliveColor);
+                painter.fillRect(*cell, aliveColor);
             }
             else {
-                painter.fillRect(i*cellSize, j*cellSize, ((i+1)*cellSize)-2, ((j+1)*cellSize)-2, deadColor);
+                painter.fillRect(*cell, deadColor);
             }
         }
     }
+
     setSceneRect(0, 0, imageWidth, imageHeight);
     addPixmap(QPixmap::fromImage(image));
 }

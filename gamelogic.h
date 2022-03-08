@@ -12,6 +12,7 @@ public:
 
     vector<vector<bool>> calculateNextStep(vector<vector<bool>>& currentState); // calculating next step based on its current state
     void nextStep();
+    void createBoard(short cellsInRow);
 
     vector<vector<bool>> gameState;
     short cellsInRow;

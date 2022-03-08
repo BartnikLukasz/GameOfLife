@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     gameLogic = new GameLogic();
     gameWindow = new GameWindow();
+    //gameWindow->resize(1280, 720);
     gameWindow->show();
     return a.exec();
 }
