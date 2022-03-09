@@ -57,7 +57,7 @@ void GameOfLifeGraphicsScene::drawCells(vector<vector<bool>> gameState, short ce
 
     for(int i = 0; i < cellsInRow; i++) {
 
-        for(int j = 0; j < cellsInRow; j++) {
+        for(int j = 0; j < cellsInColumn; j++) {
 
             QRect *cell = new QRect(QPoint(i*cellSize, j*cellSize), QPoint(((i+1)*cellSize)-2, ((j+1)*cellSize)-2));
 

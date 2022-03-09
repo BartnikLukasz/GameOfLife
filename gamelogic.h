@@ -15,6 +15,9 @@ public:
     void createBoard(short cellsInRow);
 
     vector<vector<bool>> gameState;
+
+    vector<vector<bool>> gameStartingState;
+
     short cellsInRow;
 
 };

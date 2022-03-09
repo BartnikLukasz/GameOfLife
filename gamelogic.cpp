@@ -1,5 +1,6 @@
 #include "gamelogic.h"
 #include "gamewindow.h"
+#include "iostream"
 
 #include <vector>
 
@@ -7,8 +8,8 @@ using namespace std;
 
 extern GameWindow * gameWindow;
 
-#define rows 60
-#define columns 40
+#define columns 60
+#define rows 30
 
 GameLogic::GameLogic()
 {
@@ -17,11 +18,12 @@ GameLogic::GameLogic()
 
 vector<vector<bool>> GameLogic::calculateNextStep(vector<vector<bool>> & currentState)
 {
-    vector<vector<bool>> nextState(rows, vector<bool>(columns, false)); //creating matrix representing state of the game
+    vector<vector<bool>> nextState(columns, vector<bool>(rows, false)); //creating matrix representing state of the game
 
-    for(int i = 0; i < columns; i++) {
 
-        for(int j = 0; j < rows; j++) {
+    for(int i = 0; i < nextState.size(); i++) {
+
+        for(int j = 0; j < nextState[i].size(); j++) {
 
             short numberOfAliveNeighbors = 0;
 
@@ -51,7 +53,7 @@ vector<vector<bool>> GameLogic::calculateNextStep(vector<vector<bool>> & current
             }
             else {
                 numberOfAliveNeighbors += currentState[i-1][j-1] + currentState[i][j-1] + currentState[i+1][j-1] + currentState[i+1][j] +
-                        currentState[i+1][j+1] + currentState[i][j+1] + currentState[i-1][j+1] + currentState[i-1][j]; // middle]
+                        currentState[i+1][j+1] + currentState[i][j+1] + currentState[i-1][j+1] + currentState[i-1][j]; // middle
             }
 
             if(currentState[i][j]) {
@@ -89,6 +91,6 @@ void GameLogic::nextStep()
 }
 
 void GameLogic::createBoard(short cellsInRow) {
-    this->gameState = vector<vector<bool>>(rows, vector<bool>(columns, false));
+    this->gameState = vector<vector<bool>>(columns, vector<bool>(rows, false));
     this->cellsInRow = cellsInRow;
 }
