@@ -104,6 +104,13 @@ void GameWindow::on_loadButton_clicked()
     }
 }
 
+void GameWindow::on_randomButton_clicked()
+{
+    gameLogic->randomizeGameState();
+    board->drawCells(gameLogic->gameState, gameLogic->cellsInRow);
+    updateUI();
+}
+
 bool GameWindow::saveStartingState() {
 
     QString fileName = QFileDialog::getSaveFileName(this,
@@ -192,3 +199,4 @@ void GameWindow::pause() {
 void GameWindow::unpause() {
     gameActive = true;
 }
+

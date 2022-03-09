@@ -1,6 +1,7 @@
 #include "gamelogic.h"
 #include "gamewindow.h"
 #include "iostream"
+#include "random"
 
 #include <vector>
 
@@ -93,4 +94,16 @@ void GameLogic::nextStep()
 void GameLogic::createBoard(short cellsInRow) {
     this->gameState = vector<vector<bool>>(columns, vector<bool>(rows, false));
     this->cellsInRow = cellsInRow;
+}
+
+void GameLogic::randomizeGameState() {
+    random_device random;
+    for(int i = 0; i < this->gameState.size(); i++) {
+        for(int j = 0; j < this->gameState[i].size(); j++) {
+
+            mt19937 rng(random());
+
+            this->gameState[i][j] = (uniform_int_distribution<int>(0, 9)(rng) >6);
+        }
+    }
 }

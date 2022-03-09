@@ -35,6 +35,8 @@ private slots:
 
     void on_startStopButton_clicked();
 
+    void on_randomButton_clicked();
+
 private:
     Ui::GameWindow *ui;
     GameOfLifeGraphicsScene *board;

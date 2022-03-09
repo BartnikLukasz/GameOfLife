@@ -20,6 +20,7 @@ public:
 
     short cellsInRow;
 
+    void randomizeGameState();
 };
 
 #endif // GAMELOGIC_H
