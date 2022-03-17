@@ -19,7 +19,8 @@ GameOfLifeGraphicsScene::GameOfLifeGraphicsScene(QObject *parent)
 
 GameOfLifeGraphicsScene::GameOfLifeGraphicsScene(QMainWindow *parent)
 {
-
+    this->height = 600;
+    this->width = 1200;
 }
 
 GameOfLifeGraphicsScene::GameOfLifeGraphicsScene(QGraphicsScene *parent)
@@ -34,20 +35,17 @@ void GameOfLifeGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void GameOfLifeGraphicsScene::drawCells(vector<vector<bool>> gameState, short cellsInRow)
 {
-    short imageHeight = 600; //TODO zmiana wielkości na ustawialną
-    short imageWidth = 1200;
+    short cellSize = width / cellsInRow;
+    short cellsInColumn = height / cellSize;
 
-    short cellSize = imageWidth / cellsInRow;
-    short cellsInColumn = imageHeight / cellSize;
-
-    QImage image(imageWidth, imageHeight, QImage::Format_RGB32);
+    QImage image(width, height, QImage::Format_RGB32);
 
     QRgb deadColor = qRgb(200, 200, 200);
     QRgb aliveColor = qRgb(50, 50, 50);
 
     QPainter painter(&image);
 
-    painter.fillRect(0, 0, imageWidth, imageHeight, qRgb(255, 255, 255));
+    painter.fillRect(0, 0, width, height, qRgb(255, 255, 255));
 
     /*painter.fillRect(0, 0, cellSize-2, cellSize-2, deadColor);
     painter.fillRect(0, cellSize, cellSize-2, (2*cellSize)-2, deadColor);
@@ -70,7 +68,7 @@ void GameOfLifeGraphicsScene::drawCells(vector<vector<bool>> gameState, short ce
         }
     }
 
-    setSceneRect(0, 0, imageWidth, imageHeight);
+    setSceneRect(0, 0, width, height);
     addPixmap(QPixmap::fromImage(image));
 }
 

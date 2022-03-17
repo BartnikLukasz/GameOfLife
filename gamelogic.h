@@ -21,6 +21,11 @@ public:
     short cellsInRow;
 
     void randomizeGameState();
+
+    void reload();
+private:
+    short columns;
+    short rows;
 };
 
 #endif // GAMELOGIC_H

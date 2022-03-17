@@ -25,6 +25,9 @@ public:
     void updateUI();
 
     void startGame();
+    short getChosenNumberOfCellsInRow();
+    short getChosenNumberOfCellsInColumn();
+    void drawEmptyBoard();
 private slots:
 
     void nextStep();
@@ -36,6 +39,8 @@ private slots:
     void on_startStopButton_clicked();
 
     void on_randomButton_clicked();
+
+    void on_sizeComboBox_currentIndexChanged(int index);
 
 private:
     Ui::GameWindow *ui;

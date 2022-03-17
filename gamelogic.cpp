@@ -9,12 +9,11 @@ using namespace std;
 
 extern GameWindow * gameWindow;
 
-#define columns 60
-#define rows 30
-
 GameLogic::GameLogic()
 {
-    this->cellsInRow = 60; //TODO zmienić na wartość ustawialną
+    this->cellsInRow = gameWindow->getChosenNumberOfCellsInRow();
+    this->columns = this->cellsInRow;
+    this->rows = gameWindow->getChosenNumberOfCellsInColumn();
 }
 
 vector<vector<bool>> GameLogic::calculateNextStep(vector<vector<bool>> & currentState)
@@ -106,4 +105,11 @@ void GameLogic::randomizeGameState() {
             this->gameState[i][j] = (uniform_int_distribution<int>(0, 9)(rng) >6);
         }
     }
+}
+
+void GameLogic::reload() {
+    this->cellsInRow = gameWindow->getChosenNumberOfCellsInRow();
+    this->columns = this->cellsInRow;
+    this->rows = gameWindow->getChosenNumberOfCellsInColumn();
+    this->gameState = vector<vector<bool>>(columns, vector<bool>(rows, false));
 }

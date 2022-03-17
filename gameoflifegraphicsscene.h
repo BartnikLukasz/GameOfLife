@@ -19,6 +19,10 @@ public:
 
     void drawCells(vector<vector<bool>> gameState, short cellsInRow);
 
+    short width;
+
+    short height;
+
 };
 
 #endif // GAMEOFLIFEGRAPHICSSCENE_H

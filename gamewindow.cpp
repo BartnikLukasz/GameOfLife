@@ -13,19 +13,21 @@ using namespace std;
 
 extern GameLogic * gameLogic;
 
+QStringList sizes = {"60x30", "30x15", "60x120"};
+
 GameWindow::GameWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::GameWindow)
 {
     gameActive = false;
     ui->setupUi(this);
+
+    ui->sizeComboBox->addItems(sizes);
+
     board = new GameOfLifeGraphicsScene(this);
     ui->graphicsView->setScene(board);
 
     ui->graphicsView->update();
-
-    gameLogic->createBoard(60); // zmienic na edytowalne
-    board->drawCells(gameLogic->gameState, gameLogic->cellsInRow);
 }
 
 GameWindow::~GameWindow()
@@ -33,12 +35,14 @@ GameWindow::~GameWindow()
     delete ui;
 }
 
+void GameWindow::drawEmptyBoard() {
+    gameLogic->createBoard(getChosenNumberOfCellsInRow()); // zmienic na edytowalne
+    board->drawCells(gameLogic->gameState, gameLogic->cellsInRow);
+}
+
 void GameWindow::toggleCell(int x, int y, GameOfLifeGraphicsScene *board)
 {
-    short imageHeight = 600; //TODO zmiana wielkości na ustawialną
-    short imageWidth = 1200;
-
-    short cellSize = imageWidth / gameLogic->cellsInRow;
+    short cellSize = board->width / gameLogic->cellsInRow;
 
     short row = x / cellSize;
     short column = y / cellSize;
@@ -198,5 +202,39 @@ void GameWindow::pause() {
 
 void GameWindow::unpause() {
     gameActive = true;
+}
+
+short GameWindow::getChosenNumberOfCellsInRow() {
+    switch(ui->sizeComboBox->currentIndex()) {
+        case 0:
+            return 60;
+        case 1:
+            return 30;
+        case 2:
+            return 120;
+        default:
+            return 60;
+    }
+}
+
+short GameWindow::getChosenNumberOfCellsInColumn() {
+    switch(ui->sizeComboBox->currentIndex()) {
+        case 0:
+            return 30;
+        case 1:
+            return 15;
+        case 2:
+            return 60;
+        default:
+            return 30;
+    }
+}
+
+void GameWindow::on_sizeComboBox_currentIndexChanged(int index)
+{
+    if(gameLogic) {
+        gameLogic->reload();
+        drawEmptyBoard();
+    }
 }
 
