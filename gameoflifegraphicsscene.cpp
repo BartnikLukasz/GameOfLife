@@ -1,3 +1,4 @@
+#include "agingcell.h"
 #include "gameoflifegraphicsscene.h"
 #include "gamewindow.h"
 
@@ -33,7 +34,7 @@ void GameOfLifeGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
     gameWindow->toggleCell(event->scenePos().x(), event->scenePos().y(), this);
 }
 
-void GameOfLifeGraphicsScene::drawCells(vector<vector<bool>> gameState, short cellsInRow)
+void GameOfLifeGraphicsScene::drawCells(vector<vector<AgingCell>> gameState, short cellsInRow)
 {
     short cellSize = width / cellsInRow;
     short cellsInColumn = height / cellSize;
@@ -59,7 +60,7 @@ void GameOfLifeGraphicsScene::drawCells(vector<vector<bool>> gameState, short ce
 
             QRect *cell = new QRect(QPoint(i*cellSize, j*cellSize), QPoint(((i+1)*cellSize)-2, ((j+1)*cellSize)-2));
 
-            if(gameState[i][j]) {
+            if(gameState[i][j].isAlive()) {
                 painter.fillRect(*cell, aliveColor);
             }
             else {

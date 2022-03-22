@@ -16,9 +16,9 @@ GameLogic::GameLogic()
     this->rows = gameWindow->getChosenNumberOfCellsInColumn();
 }
 
-vector<vector<bool>> GameLogic::calculateNextStep(vector<vector<bool>> & currentState)
+vector<vector<AgingCell> > GameLogic::calculateNextStep(vector<vector<AgingCell> > &currentState)
 {
-    vector<vector<bool>> nextState(columns, vector<bool>(rows, false)); //creating matrix representing state of the game
+    vector<vector<AgingCell>> nextState(columns, vector<AgingCell>(rows, AgingCell())); //creating matrix representing state of the game
 
 
     for(int i = 0; i < nextState.size(); i++) {
@@ -28,52 +28,56 @@ vector<vector<bool>> GameLogic::calculateNextStep(vector<vector<bool>> & current
             short numberOfAliveNeighbors = 0;
 
             if(i == 0 && j == 0) {
-                numberOfAliveNeighbors += currentState[0][1] + currentState[1][0] + currentState[1][1]; //top left corner
+                numberOfAliveNeighbors += currentState[0][1].isAlive() + currentState[1][0].isAlive() + currentState[1][1].isAlive(); //top left corner
             }
             else if(i == 0 && j == rows-1) {
-                numberOfAliveNeighbors += currentState[0][j-1] + currentState[1][j-1] + currentState[1][j]; //bottom left corner
+                numberOfAliveNeighbors += currentState[0][j-1].isAlive() + currentState[1][j-1].isAlive() + currentState[1][j].isAlive(); //bottom left corner
             }
             else if(i == columns-1 && j == 0) {
-                numberOfAliveNeighbors += currentState[i-1][0] + currentState[i-1][1] + currentState[i][1]; //top right corner
+                numberOfAliveNeighbors += currentState[i-1][0].isAlive() + currentState[i-1][1].isAlive() + currentState[i][1].isAlive(); //top right corner
             }
             else if(i == columns-1 && j == rows-1) {
-                numberOfAliveNeighbors += currentState[i-1][j] + currentState[i-1][j-1] + currentState[i][j-1]; // bottom right corner
+                numberOfAliveNeighbors += currentState[i-1][j].isAlive() + currentState[i-1][j-1].isAlive() + currentState[i][j-1].isAlive(); // bottom right corner
             }
             else if(i == 0) {
-                numberOfAliveNeighbors += currentState[0][j-1] + currentState[1][j-1] + currentState[1][j] + currentState[1][j+1] + currentState[0][j+1]; // left border
+                numberOfAliveNeighbors += currentState[0][j-1].isAlive() + currentState[1][j-1].isAlive() + currentState[1][j].isAlive() +
+                        currentState[1][j+1].isAlive() + currentState[0][j+1].isAlive(); // left border
             }
             else if(j == 0) {
-                numberOfAliveNeighbors += currentState[i-1][0] + currentState[i-1][1] + currentState[i][1] + currentState[i+1][1] + currentState[i+1][0]; // top border
+                numberOfAliveNeighbors += currentState[i-1][0].isAlive() + currentState[i-1][1].isAlive() + currentState[i][1].isAlive() +
+                        currentState[i+1][1].isAlive() + currentState[i+1][0].isAlive(); // top border
             }
             else if(i == columns-1) {
-                numberOfAliveNeighbors += currentState[i][j-1] + currentState[i-1][j-1] + currentState[i-1][j] + currentState[i-1][j+1] + currentState[i][j+1]; // right border
+                numberOfAliveNeighbors += currentState[i][j-1].isAlive() + currentState[i-1][j-1].isAlive() + currentState[i-1][j].isAlive() +
+                        currentState[i-1][j+1].isAlive() + currentState[i][j+1].isAlive(); // right border
             }
             else if(j == rows-1) {
-                numberOfAliveNeighbors += currentState[i-1][j] + currentState[i-1][j-1] + currentState[i][j-1] + currentState[i+1][j-1] + currentState[i+1][j]; //bottom border
+                numberOfAliveNeighbors += currentState[i-1][j].isAlive() + currentState[i-1][j-1].isAlive() + currentState[i][j-1].isAlive() +
+                        currentState[i+1][j-1].isAlive() + currentState[i+1][j].isAlive(); //bottom border
             }
             else {
-                numberOfAliveNeighbors += currentState[i-1][j-1] + currentState[i][j-1] + currentState[i+1][j-1] + currentState[i+1][j] +
-                        currentState[i+1][j+1] + currentState[i][j+1] + currentState[i-1][j+1] + currentState[i-1][j]; // middle
+                numberOfAliveNeighbors += currentState[i-1][j-1].isAlive() + currentState[i][j-1].isAlive() + currentState[i+1][j-1].isAlive() + currentState[i+1][j].isAlive() +
+                        currentState[i+1][j+1].isAlive() + currentState[i][j+1].isAlive() + currentState[i-1][j+1].isAlive() + currentState[i-1][j].isAlive(); // middle
             }
 
-            if(currentState[i][j]) {
+            if(currentState[i][j].isAlive()) {
                 switch (numberOfAliveNeighbors) {
                     case 2:
                     case 3:
-                        nextState[i][j] = true;
+                        nextState[i][j].beBorn();
                         break;
                     default:
-                        nextState[i][j] = false;
+                        nextState[i][j].die();
                         break;
                 }
             }
             else {
                 switch (numberOfAliveNeighbors) {
                     case 3:
-                        nextState[i][j] = true;
+                        nextState[i][j].beBorn();
                         break;
                     default:
-                        nextState[i][j] = false;
+                        nextState[i][j].die();
                         break;
                 }
             }
@@ -91,7 +95,7 @@ void GameLogic::nextStep()
 }
 
 void GameLogic::createBoard(short cellsInRow) {
-    this->gameState = vector<vector<bool>>(columns, vector<bool>(rows, false));
+    this->gameState = vector<vector<AgingCell>>(columns, vector<AgingCell>(rows, AgingCell()));
     this->cellsInRow = cellsInRow;
 }
 
@@ -102,7 +106,9 @@ void GameLogic::randomizeGameState() {
 
             mt19937 rng(random());
 
-            this->gameState[i][j] = (uniform_int_distribution<int>(0, 9)(rng) >6);
+            if(uniform_int_distribution<int>(0, 9)(rng) >6) {
+                this->gameState[i][j].beBorn();
+            }
         }
     }
 }
@@ -111,5 +117,5 @@ void GameLogic::reload() {
     this->cellsInRow = gameWindow->getChosenNumberOfCellsInRow();
     this->columns = this->cellsInRow;
     this->rows = gameWindow->getChosenNumberOfCellsInColumn();
-    this->gameState = vector<vector<bool>>(columns, vector<bool>(rows, false));
+    this->gameState = vector<vector<AgingCell>>(columns, vector<AgingCell>(rows, AgingCell()));
 }

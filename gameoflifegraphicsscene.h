@@ -1,6 +1,8 @@
 #ifndef GAMEOFLIFEGRAPHICSSCENE_H
 #define GAMEOFLIFEGRAPHICSSCENE_H
 
+#include "agingcell.h"
+
 #include <QGraphicsScene>
 #include <QMainWindow>
 
@@ -17,7 +19,7 @@ public:
 
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 
-    void drawCells(vector<vector<bool>> gameState, short cellsInRow);
+    void drawCells(vector<vector<AgingCell> > gameState, short cellsInRow);
 
     short width;
 

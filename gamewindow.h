@@ -1,6 +1,7 @@
 #ifndef GAMEWINDOW_H
 #define GAMEWINDOW_H
 
+#include "agingcell.h"
 #include "gameoflifegraphicsscene.h"
 #include "ui_mainwindow.h"
 
@@ -49,10 +50,12 @@ private:
 
     bool gameActive;
     bool saveStartingState();
-    QVector<QVector<bool>> std2DVectorTo2DQVector(vector<vector<bool> > vector);
+    QVector<QVector<bool> > std2DVectorTo2DQVector(vector<vector<bool> > vector);
     bool loadStartingState();
     vector<vector<bool> > qVectorToStd2DVector(QVector<QVector<bool> > qVector);
     void pause();
     void unpause();
+    vector<vector<bool> > convertAgingCellToBool(vector<vector<AgingCell> > agingCellGameState);
+    vector<vector<AgingCell> > convertBoolToAgingCell(vector<vector<bool> > boolGameState);
 };
 #endif // GAMEWINDOW_H

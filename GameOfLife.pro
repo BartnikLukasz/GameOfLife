@@ -9,12 +9,18 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    agingcell.cpp \
+    cell.cpp \
+    cellage.cpp \
     gamelogic.cpp \
     gameoflifegraphicsscene.cpp \
     gamewindow.cpp \
     main.cpp
 
 HEADERS += \
+    agingcell.h \
+    cell.h \
+    cellage.h \
     gamelogic.h \
     gameoflifegraphicsscene.h \
     gamewindow.h

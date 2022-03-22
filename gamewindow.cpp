@@ -1,6 +1,7 @@
 #include "gamelogic.h"
 #include "gamewindow.h"
 #include "ui_gamewindow.h"
+#include "iostream"
 
 #include <QThread>
 #include <QTimer>
@@ -46,8 +47,24 @@ void GameWindow::toggleCell(int x, int y, GameOfLifeGraphicsScene *board)
 
     short row = x / cellSize;
     short column = y / cellSize;
-    gameLogic->gameState[row][column] = !gameLogic->gameState[row][column];
+    if(gameLogic->gameState[row][column].isAlive()) {
+        gameLogic->gameState[row][column].die();
+    }
+    else {
+        gameLogic->gameState[row][column].beBorn();
+    }
+    cout<< "Row: "<<row<<endl;
+    cout<< "Column: "<<column<<endl;
+    cout<<gameLogic->gameState[row][column].isAlive();
     board->drawCells(gameLogic->gameState, gameLogic->cellsInRow);
+
+    for(int i = 0; i< gameLogic->gameState.size(); i++) {
+        for(int j = 0; j<gameLogic->gameState[i].size(); j++) {
+            //cout << gameLogic->gameState[i][j].isAlive();
+        }
+        //cout<<endl;
+    }
+    cout<<endl;
 
     this->update();
 }
@@ -133,7 +150,7 @@ bool GameWindow::saveStartingState() {
 
     QDataStream out(&file);
     out.setVersion(QDataStream::Qt_6_2);
-    QVector<QVector<bool>> savedStartingState = std2DVectorTo2DQVector(gameLogic->gameStartingState);
+    QVector<QVector<bool>> savedStartingState = std2DVectorTo2DQVector(convertAgingCellToBool(gameLogic->gameStartingState));
     out << savedStartingState;
 
     return true;
@@ -163,7 +180,7 @@ bool GameWindow::loadStartingState() {
             QVector<QVector<bool>> loadedStartingStater;
             in >> loadedStartingStater;
 
-            gameLogic->gameStartingState = qVectorToStd2DVector(loadedStartingStater);
+            gameLogic->gameStartingState = convertBoolToAgingCell(qVectorToStd2DVector(loadedStartingStater));
             return true;
     }
 }
@@ -238,3 +255,38 @@ void GameWindow::on_sizeComboBox_currentIndexChanged(int index)
     }
 }
 
+vector<vector<bool>> GameWindow::convertAgingCellToBool(vector<vector<AgingCell>> agingCellGameState) {
+
+    vector<vector<bool>> returnedVector = vector<vector<bool>>(agingCellGameState.size(), vector<bool>(agingCellGameState[0].size(), false));
+
+    for(int i = 0; i < agingCellGameState.size(); i++) {
+
+        for(int j = 0; j<agingCellGameState[i].size(); j++) {
+
+            returnedVector[i][j] = true; //agingCellGameState[i][j].isAlive();
+
+        }
+    }
+
+    return returnedVector;
+}
+
+vector<vector<AgingCell>> GameWindow::convertBoolToAgingCell(vector<vector<bool>> boolGameState) {
+
+    vector<vector<AgingCell>> returnedVector = vector<vector<AgingCell>>(boolGameState.size(), vector<AgingCell>(boolGameState[0].size(), AgingCell()));
+
+    for(int i = 0; i < boolGameState.size(); i++) {
+
+        for(int j = 0; j<boolGameState[i].size(); j++) {
+
+            if(boolGameState[i][j]) {
+                returnedVector[i][j].beBorn();
+            }
+            else {
+                returnedVector[i][j].die();
+            }
+        }
+    }
+
+    return returnedVector;
+}
