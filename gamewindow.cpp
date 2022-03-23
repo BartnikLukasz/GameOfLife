@@ -37,7 +37,7 @@ GameWindow::~GameWindow()
 }
 
 void GameWindow::drawEmptyBoard() {
-    gameLogic->createBoard(getChosenNumberOfCellsInRow()); // zmienic na edytowalne
+    gameLogic->createBoard(getChosenNumberOfCellsInRow());
     board->drawCells(gameLogic->gameState, gameLogic->cellsInRow);
 }
 
@@ -88,7 +88,7 @@ void GameWindow::nextStep() {
     gameLogic->nextStep();
     board->drawCells(gameLogic->gameState, gameLogic->cellsInRow);
 
-    QTimer::singleShot(100, this, SLOT(nextStep()));
+    QTimer::singleShot(500, this, SLOT(nextStep()));
 
     ui->graphicsView->update();
 }

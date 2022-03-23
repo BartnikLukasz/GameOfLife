@@ -7,7 +7,7 @@ AgingCell::AgingCell()
 }
 
 void Cell::getOlder() {
-    cellAge->addAge();
+    cellAge.addAge();
     if(getAge() == 0) {
         die();
     }

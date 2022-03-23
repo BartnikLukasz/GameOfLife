@@ -9,6 +9,7 @@ public:
     void addAge();
     short getAge();
 
+    void setAge(short age);
 private:
     short age;
 };

@@ -3,7 +3,7 @@
 Cell::Cell()
 {
     alive = false;
-    cellAge = new CellAge();
+    cellAge = CellAge();
 }
 
 bool Cell::isAlive() {
@@ -11,14 +11,23 @@ bool Cell::isAlive() {
 }
 
 short Cell::getAge() {
-    return cellAge->getAge();
+    return cellAge.getAge();
 }
 
 void Cell::beBorn() {
     this->alive = true;
-    cellAge->addAge();
+    setAge(1);
+}
+
+void Cell::stayAlive(short currentAge) {
+    this->alive = true;
+    setAge(currentAge);
 }
 
 void Cell::die() {
-    alive = false;
+    this->alive = false;
+}
+
+void Cell::setAge(short age) {
+    cellAge.setAge(age);
 }

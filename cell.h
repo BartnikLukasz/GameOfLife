@@ -15,9 +15,11 @@ public:
     void die();
     virtual void getOlder();
 
+    void stayAlive(short currentAge);
 private:
     bool alive;
-    CellAge* cellAge;
+    CellAge cellAge;
+    void setAge(short age);
 };
 
 #endif // CELL_H

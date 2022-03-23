@@ -1,6 +1,7 @@
 #include "agingcell.h"
 #include "gameoflifegraphicsscene.h"
 #include "gamewindow.h"
+#include "iostream"
 
 #include <QGraphicsSceneMouseEvent>
 #include <QImage>
@@ -42,7 +43,6 @@ void GameOfLifeGraphicsScene::drawCells(vector<vector<AgingCell>> gameState, sho
     QImage image(width, height, QImage::Format_RGB32);
 
     QRgb deadColor = qRgb(200, 200, 200);
-    QRgb aliveColor = qRgb(50, 50, 50);
 
     QPainter painter(&image);
 
@@ -61,7 +61,8 @@ void GameOfLifeGraphicsScene::drawCells(vector<vector<AgingCell>> gameState, sho
             QRect *cell = new QRect(QPoint(i*cellSize, j*cellSize), QPoint(((i+1)*cellSize)-2, ((j+1)*cellSize)-2));
 
             if(gameState[i][j].isAlive()) {
-                painter.fillRect(*cell, aliveColor);
+                short calculatedShade = gameState[i][j].getAge()*30 + 50;
+                painter.fillRect(*cell, qRgb(calculatedShade, calculatedShade, calculatedShade));
             }
             else {
                 painter.fillRect(*cell, deadColor);

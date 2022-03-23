@@ -20,6 +20,18 @@ vector<vector<AgingCell> > GameLogic::calculateNextStep(vector<vector<AgingCell>
 {
     vector<vector<AgingCell>> nextState(columns, vector<AgingCell>(rows, AgingCell())); //creating matrix representing state of the game
 
+    for(int i = 0; i < currentState.size(); i++) {
+
+        for(int j = 0; j < currentState[i].size(); j++) {
+
+            if(currentState[i][j].isAlive()) {
+                currentState[i][j].getOlder();
+            }
+
+        }
+
+    }
+
 
     for(int i = 0; i < nextState.size(); i++) {
 
@@ -64,12 +76,13 @@ vector<vector<AgingCell> > GameLogic::calculateNextStep(vector<vector<AgingCell>
                 switch (numberOfAliveNeighbors) {
                     case 2:
                     case 3:
-                        nextState[i][j].beBorn();
+                        nextState[i][j].stayAlive(currentState[i][j].getAge()); //TODO do poprawy sprawdzanie wieku
                         break;
                     default:
                         nextState[i][j].die();
                         break;
                 }
+                cout<<currentState[i][j].getAge();
             }
             else {
                 switch (numberOfAliveNeighbors) {
@@ -81,7 +94,7 @@ vector<vector<AgingCell> > GameLogic::calculateNextStep(vector<vector<AgingCell>
                         break;
                 }
             }
-
+cout<<endl<<endl;
         }
     }
 
@@ -95,7 +108,9 @@ void GameLogic::nextStep()
 }
 
 void GameLogic::createBoard(short cellsInRow) {
-    this->gameState = vector<vector<AgingCell>>(columns, vector<AgingCell>(rows, AgingCell()));
+    AgingCell tempCell = AgingCell();
+    cout<<tempCell.getAge();
+    this->gameState = vector<vector<AgingCell>>(columns, vector<AgingCell>(rows, tempCell));
     this->cellsInRow = cellsInRow;
 }
 

@@ -17,3 +17,12 @@ void CellAge::addAge() {
 short CellAge::getAge() {
     return age;
 }
+
+void CellAge::setAge(short age) {
+    if(age < 5 && age >= 0) {
+        this->age = age;
+    }
+    else {
+        age = 0;
+    }
+}
