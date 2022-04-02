@@ -2,6 +2,7 @@
 #include "gamewindow.h"
 #include "ui_gamewindow.h"
 #include "iostream"
+#include "converters.h"
 
 #include <QThread>
 #include <QTimer>
@@ -22,11 +23,12 @@ GameWindow::GameWindow(QWidget *parent)
 {
     gameActive = false;
     ui->setupUi(this);
-
     ui->sizeComboBox->addItems(sizes);
 
     board = new GameOfLifeGraphicsScene(this);
     ui->graphicsView->setScene(board);
+
+    connectSignalsAndSlots();
 
     ui->graphicsView->update();
 }
@@ -37,6 +39,7 @@ GameWindow::~GameWindow()
 }
 
 void GameWindow::drawEmptyBoard() {
+    gameLogic->reload(this);
     gameLogic->createBoard(getChosenNumberOfCellsInRow());
     board->drawCells(gameLogic->gameState, gameLogic->cellsInRow);
 }
@@ -58,14 +61,6 @@ void GameWindow::toggleCell(int x, int y, GameOfLifeGraphicsScene *board)
     cout<<gameLogic->gameState[row][column].isAlive();
     board->drawCells(gameLogic->gameState, gameLogic->cellsInRow);
 
-    for(int i = 0; i< gameLogic->gameState.size(); i++) {
-        for(int j = 0; j<gameLogic->gameState[i].size(); j++) {
-            //cout << gameLogic->gameState[i][j].isAlive();
-        }
-        //cout<<endl;
-    }
-    cout<<endl;
-
     this->update();
 }
 
@@ -85,7 +80,7 @@ void GameWindow::nextStep() {
         return;
     }
 
-    gameLogic->nextStep();
+    gameLogic->nextStep(this, ui->agingRadio->isChecked());
     board->drawCells(gameLogic->gameState, gameLogic->cellsInRow);
 
     QTimer::singleShot(500, this, SLOT(nextStep()));
@@ -93,7 +88,7 @@ void GameWindow::nextStep() {
     ui->graphicsView->update();
 }
 
-void GameWindow::on_startStopButton_clicked()
+void GameWindow::startStopButton_clicked()
 {
     if(!gameActive) {
         gameLogic->gameStartingState = gameLogic->gameState;
@@ -107,7 +102,7 @@ void GameWindow::on_startStopButton_clicked()
 }
 
 
-void GameWindow::on_saveButton_clicked()
+void GameWindow::saveButton_clicked()
 {
     if(gameLogic->gameStartingState.empty()) {
         gameLogic->gameStartingState = gameLogic->gameState;
@@ -116,7 +111,7 @@ void GameWindow::on_saveButton_clicked()
 }
 
 
-void GameWindow::on_loadButton_clicked()
+void GameWindow::loadButton_clicked()
 {
     pause();
     if(loadStartingState()) {
@@ -125,7 +120,7 @@ void GameWindow::on_loadButton_clicked()
     }
 }
 
-void GameWindow::on_randomButton_clicked()
+void GameWindow::randomButton_clicked()
 {
     gameLogic->randomizeGameState();
     board->drawCells(gameLogic->gameState, gameLogic->cellsInRow);
@@ -150,7 +145,7 @@ bool GameWindow::saveStartingState() {
 
     QDataStream out(&file);
     out.setVersion(QDataStream::Qt_6_2);
-    QVector<QVector<bool>> savedStartingState = std2DVectorTo2DQVector(convertAgingCellToBool(gameLogic->gameStartingState));
+    QVector<QVector<bool>> savedStartingState = cvt::std2DVectorTo2DQVector(cvt::convertAgingCellToBool(gameLogic->gameStartingState));
     out << savedStartingState;
 
     return true;
@@ -177,40 +172,12 @@ bool GameWindow::loadStartingState() {
 
             QDataStream in(&file);
             in.setVersion(QDataStream::Qt_6_2);
-            QVector<QVector<bool>> loadedStartingStater;
-            in >> loadedStartingStater;
+            QVector<QVector<bool>> loadedStartingState;
+            in >> loadedStartingState;
 
-            gameLogic->gameStartingState = convertBoolToAgingCell(qVectorToStd2DVector(loadedStartingStater));
+            gameLogic->gameStartingState = cvt::convertBoolToAgingCell(cvt::qVectorToStd2DVector(loadedStartingState));
             return true;
     }
-}
-
-QVector<QVector<bool>> GameWindow::std2DVectorTo2DQVector(vector<vector<bool>> vector) {
-
-    QVector<QVector<bool>> returnedQVector;
-
-    for(int i = 0; i < vector.size(); i++) {
-
-        QVector<bool> tempQVector = QVector<bool>(vector[i].begin(), vector[i].end());
-
-        returnedQVector.push_back(tempQVector);
-    }
-
-    return returnedQVector;
-}
-
-vector<vector<bool>> GameWindow::qVectorToStd2DVector(QVector<QVector<bool>> qVector) {
-
-    vector<vector<bool>> returnedVector;
-
-    for(int i = 0; i < qVector.size(); i++) {
-
-        vector<bool> tempVector = vector<bool>(qVector[i].begin(), qVector[i].end());
-
-        returnedVector.push_back(tempVector);
-    }
-
-    return returnedVector;
 }
 
 void GameWindow::pause() {
@@ -247,46 +214,18 @@ short GameWindow::getChosenNumberOfCellsInColumn() {
     }
 }
 
-void GameWindow::on_sizeComboBox_currentIndexChanged(int index)
+void GameWindow::sizeComboBox_currentIndexChanged(int index)
 {
     if(gameLogic) {
-        gameLogic->reload();
+        gameLogic->reload(this);
         drawEmptyBoard();
     }
 }
 
-vector<vector<bool>> GameWindow::convertAgingCellToBool(vector<vector<AgingCell>> agingCellGameState) {
-
-    vector<vector<bool>> returnedVector = vector<vector<bool>>(agingCellGameState.size(), vector<bool>(agingCellGameState[0].size(), false));
-
-    for(int i = 0; i < agingCellGameState.size(); i++) {
-
-        for(int j = 0; j<agingCellGameState[i].size(); j++) {
-
-            returnedVector[i][j] = true; //agingCellGameState[i][j].isAlive();
-
-        }
-    }
-
-    return returnedVector;
-}
-
-vector<vector<AgingCell>> GameWindow::convertBoolToAgingCell(vector<vector<bool>> boolGameState) {
-
-    vector<vector<AgingCell>> returnedVector = vector<vector<AgingCell>>(boolGameState.size(), vector<AgingCell>(boolGameState[0].size(), AgingCell()));
-
-    for(int i = 0; i < boolGameState.size(); i++) {
-
-        for(int j = 0; j<boolGameState[i].size(); j++) {
-
-            if(boolGameState[i][j]) {
-                returnedVector[i][j].beBorn();
-            }
-            else {
-                returnedVector[i][j].die();
-            }
-        }
-    }
-
-    return returnedVector;
+void GameWindow::connectSignalsAndSlots() {
+    QObject::connect(ui->saveButton, SIGNAL(clicked()), this, SLOT(saveButton_clicked()));
+    QObject::connect(ui->loadButton, SIGNAL(clicked()), this, SLOT(loadButton_clicked()));
+    QObject::connect(ui->startStopButton, SIGNAL(clicked()), this, SLOT(startStopButton_clicked()));
+    QObject::connect(ui->randomButton, SIGNAL(clicked()), this, SLOT(randomButton_clicked()));
+    QObject::connect(ui->sizeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(sizeComboBox_currentIndexChanged(int)));
 }

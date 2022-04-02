@@ -1,4 +1,5 @@
 #include "cellage.h"
+#include "iostream"
 
 CellAge::CellAge()
 {
@@ -8,6 +9,9 @@ CellAge::CellAge()
 void CellAge::addAge() {
     if(age < 5 && age >= 0) {
         age++;
+    }
+    else if(age == 5) {
+        return;
     }
     else {
         age = 0;
@@ -22,7 +26,10 @@ void CellAge::setAge(short age) {
     if(age < 5 && age >= 0) {
         this->age = age;
     }
+    else if(age == 5) {
+        this->age = -1;
+    }
     else {
-        age = 0;
+       this-> age = 0;
     }
 }

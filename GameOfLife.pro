@@ -12,18 +12,22 @@ SOURCES += \
     agingcell.cpp \
     cell.cpp \
     cellage.cpp \
+    converters.cpp \
     gamelogic.cpp \
     gameoflifegraphicsscene.cpp \
     gamewindow.cpp \
+    livingcell.cpp \
     main.cpp
 
 HEADERS += \
     agingcell.h \
     cell.h \
     cellage.h \
+    converters.h \
     gamelogic.h \
     gameoflifegraphicsscene.h \
-    gamewindow.h
+    gamewindow.h \
+    livingcell.h
 
 FORMS += \
     gamewindow.ui

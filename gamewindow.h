@@ -33,15 +33,15 @@ private slots:
 
     void nextStep();
 
-    void on_saveButton_clicked();
+    void saveButton_clicked();
 
-    void on_loadButton_clicked();
+    void loadButton_clicked();
 
-    void on_startStopButton_clicked();
+    void startStopButton_clicked();
 
-    void on_randomButton_clicked();
+    void randomButton_clicked();
 
-    void on_sizeComboBox_currentIndexChanged(int index);
+    void sizeComboBox_currentIndexChanged(int index);
 
 private:
     Ui::GameWindow *ui;
@@ -50,12 +50,9 @@ private:
 
     bool gameActive;
     bool saveStartingState();
-    QVector<QVector<bool> > std2DVectorTo2DQVector(vector<vector<bool> > vector);
     bool loadStartingState();
-    vector<vector<bool> > qVectorToStd2DVector(QVector<QVector<bool> > qVector);
     void pause();
     void unpause();
-    vector<vector<bool> > convertAgingCellToBool(vector<vector<AgingCell> > agingCellGameState);
-    vector<vector<AgingCell> > convertBoolToAgingCell(vector<vector<bool> > boolGameState);
+    void connectSignalsAndSlots();
 };
 #endif // GAMEWINDOW_H

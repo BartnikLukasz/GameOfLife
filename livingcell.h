@@ -1,13 +1,12 @@
-#ifndef AGINGCELL_H
-#define AGINGCELL_H
+#ifndef LIVINGCELL_H
+#define LIVINGCELL_H
 
 #include "cell.h"
 
-
-class AgingCell : public Cell
+class LivingCell : public Cell
 {
 public:
-    AgingCell();
+    LivingCell();
     short getAge();
     void getOlder();
     void stayAlive(short currentAge);
@@ -18,4 +17,4 @@ private:
     void setAge(short age);
 };
 
-#endif // AGINGCELL_H
+#endif // LIVINGCELL_H

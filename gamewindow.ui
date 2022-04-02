@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1299</width>
-    <height>674</height>
+    <width>1388</width>
+    <height>793</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,8 +19,8 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>1301</width>
-      <height>631</height>
+      <width>1391</width>
+      <height>751</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
@@ -51,6 +51,19 @@
         </widget>
        </item>
        <item>
+        <widget class="QRadioButton" name="agingRadio">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>Starzejące się komórki</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QPushButton" name="randomButton">
          <property name="text">
           <string>Random</string>
@@ -70,7 +83,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1299</width>
+     <width>1388</width>
      <height>21</height>
     </rect>
    </property>

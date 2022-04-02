@@ -1,20 +1,23 @@
 #ifndef GAMELOGIC_H
 #define GAMELOGIC_H
 
-#include "agingcell.h"
+#include "agingCell.h"
+#include "gamewindow.h"
 
 #include <vector>
 
 using namespace std;
+
+class GameWindow;
 
 class GameLogic
 {
 public:
     GameLogic();
 
-    vector<vector<AgingCell>> calculateNextStep(vector<vector<AgingCell>>& currentState); // calculating next step based on its current state
-    void nextStep();
-    void createBoard(short cellsInRow);
+    vector<vector<AgingCell>> calculateNextStep(vector<vector<AgingCell>>& currentState, bool aging); // calculating next step based on its current state
+    void nextStep(GameWindow *gameWindow, bool aging);
+    void createBoard(short AgingCellsInRow);
 
     vector<vector<AgingCell>> gameState;
 
@@ -24,7 +27,7 @@ public:
 
     void randomizeGameState();
 
-    void reload();
+    void reload(GameWindow *gameWindow);
 private:
     short columns;
     short rows;

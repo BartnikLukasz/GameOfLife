@@ -2,21 +2,18 @@
 #include "gamewindow.h"
 #include "iostream"
 #include "random"
+#include "converters.h"
 
 #include <vector>
 
 using namespace std;
 
-extern GameWindow * gameWindow;
-
 GameLogic::GameLogic()
 {
-    this->cellsInRow = gameWindow->getChosenNumberOfCellsInRow();
-    this->columns = this->cellsInRow;
-    this->rows = gameWindow->getChosenNumberOfCellsInColumn();
+
 }
 
-vector<vector<AgingCell> > GameLogic::calculateNextStep(vector<vector<AgingCell> > &currentState)
+vector<vector<AgingCell> > GameLogic::calculateNextStep(vector<vector<AgingCell> > &currentState,  bool aging)
 {
     vector<vector<AgingCell>> nextState(columns, vector<AgingCell>(rows, AgingCell())); //creating matrix representing state of the game
 
@@ -25,7 +22,14 @@ vector<vector<AgingCell> > GameLogic::calculateNextStep(vector<vector<AgingCell>
         for(int j = 0; j < currentState[i].size(); j++) {
 
             if(currentState[i][j].isAlive()) {
-                currentState[i][j].getOlder();
+                if(aging){
+                    currentState[i][j].getOlder();
+                }
+                else {
+                    LivingCell livingCell = cvt::convertAgingCellToLivingCell(currentState[i][j]);
+                    livingCell.getOlder();
+                    currentState[i][j] = cvt::convertLivingCellToAgingCell(livingCell);
+                }
             }
 
         }
@@ -82,7 +86,6 @@ vector<vector<AgingCell> > GameLogic::calculateNextStep(vector<vector<AgingCell>
                         nextState[i][j].die();
                         break;
                 }
-                cout<<currentState[i][j].getAge();
             }
             else {
                 switch (numberOfAliveNeighbors) {
@@ -94,22 +97,20 @@ vector<vector<AgingCell> > GameLogic::calculateNextStep(vector<vector<AgingCell>
                         break;
                 }
             }
-cout<<endl<<endl;
         }
     }
 
     return nextState;
 }
 
-void GameLogic::nextStep()
+void GameLogic::nextStep(GameWindow *gameWindow, bool aging)
 {
-    this->gameState = calculateNextStep(this->gameState);
+    this->gameState = calculateNextStep(this->gameState, aging);
     gameWindow->updateUI();
 }
 
 void GameLogic::createBoard(short cellsInRow) {
     AgingCell tempCell = AgingCell();
-    cout<<tempCell.getAge();
     this->gameState = vector<vector<AgingCell>>(columns, vector<AgingCell>(rows, tempCell));
     this->cellsInRow = cellsInRow;
 }
@@ -128,7 +129,7 @@ void GameLogic::randomizeGameState() {
     }
 }
 
-void GameLogic::reload() {
+void GameLogic::reload(GameWindow *gameWindow) {
     this->cellsInRow = gameWindow->getChosenNumberOfCellsInRow();
     this->columns = this->cellsInRow;
     this->rows = gameWindow->getChosenNumberOfCellsInColumn();
