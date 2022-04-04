@@ -43,6 +43,10 @@ private slots:
 
     void sizeComboBox_currentIndexChanged(int index);
 
+    void saveCurrentButton_clicked();
+
+    void algorithmComboBox_currentIndexChanged(int index);
+
 private:
     Ui::GameWindow *ui;
     GameOfLifeGraphicsScene *board;
@@ -50,6 +54,7 @@ private:
 
     bool gameActive;
     bool saveStartingState();
+    bool saveCurrentState();
     bool loadStartingState();
     void pause();
     void unpause();

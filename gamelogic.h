@@ -4,6 +4,7 @@
 #include "agingCell.h"
 #include "gamewindow.h"
 
+#include <string>
 #include <vector>
 
 using namespace std;
@@ -24,6 +25,8 @@ public:
     vector<vector<AgingCell>> gameStartingState;
 
     short cellsInRow;
+
+    short algorithmType;
 
     void randomizeGameState();
 

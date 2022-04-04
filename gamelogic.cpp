@@ -10,7 +10,6 @@ using namespace std;
 
 GameLogic::GameLogic()
 {
-
 }
 
 vector<vector<AgingCell> > GameLogic::calculateNextStep(vector<vector<AgingCell> > &currentState,  bool aging)
@@ -76,27 +75,84 @@ vector<vector<AgingCell> > GameLogic::calculateNextStep(vector<vector<AgingCell>
                         currentState[i+1][j+1].isAlive() + currentState[i][j+1].isAlive() + currentState[i-1][j+1].isAlive() + currentState[i-1][j].isAlive(); // middle
             }
 
-            if(currentState[i][j].isAlive()) {
-                switch (numberOfAliveNeighbors) {
-                    case 2:
-                    case 3:
-                        nextState[i][j].stayAlive(currentState[i][j].getAge()); //TODO do poprawy sprawdzanie wieku
-                        break;
-                    default:
-                        nextState[i][j].die();
-                        break;
+            switch (this->algorithmType) {
+                case 0:                                                                 //zwykłe zasady
+                    if(currentState[i][j].isAlive()) {
+                        switch (numberOfAliveNeighbors) {
+                            case 2:
+                            case 3:
+                                nextState[i][j].stayAlive(currentState[i][j].getAge());
+                                break;
+                            default:
+                                nextState[i][j].die();
+                                break;
+                        }
+                    }
+                    else {
+                        switch (numberOfAliveNeighbors) {
+                            case 3:
+                                nextState[i][j].beBorn();
+                                break;
+                            default:
+                                nextState[i][j].die();
+                                break;
+                        }
+                    }
+                break;
+
+                case 1:                                                                 //zasady dla ciężko urodzić, łatwo przeżyć
+                    if(currentState[i][j].isAlive()) {
+                        switch (numberOfAliveNeighbors) {
+                            case 3:
+                            case 4:
+                            case 5:
+                            case 6:
+                                nextState[i][j].stayAlive(currentState[i][j].getAge());
+                                break;
+                            default:
+                                nextState[i][j].die();
+                                break;
+                        }
+                    }
+                    else {
+                        switch (numberOfAliveNeighbors) {
+                            case 4:
+                            case 5:
+                            case 6:
+                                nextState[i][j].beBorn();
+                                break;
+                            default:
+                                nextState[i][j].die();
+                                break;
+                        }
+                    }
+                break;
+
+                case 2:                                                                 //zasady dla łatwo urodzić, ciężko przeżyć
+                    if(currentState[i][j].isAlive()) {
+                        switch (numberOfAliveNeighbors) {
+                            case 5:
+                            case 6:
+                                nextState[i][j].stayAlive(currentState[i][j].getAge());
+                                break;
+                            default:
+                                nextState[i][j].die();
+                                break;
+                        }
+                    }
+                    else {
+                        switch (numberOfAliveNeighbors) {
+                            case 3:
+                            case 4:
+                                nextState[i][j].beBorn();
+                                break;
+                            default:
+                                nextState[i][j].die();
+                                break;
+                        }
+                    }
+                break;
                 }
-            }
-            else {
-                switch (numberOfAliveNeighbors) {
-                    case 3:
-                        nextState[i][j].beBorn();
-                        break;
-                    default:
-                        nextState[i][j].die();
-                        break;
-                }
-            }
         }
     }
 

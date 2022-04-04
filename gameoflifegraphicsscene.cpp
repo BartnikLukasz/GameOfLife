@@ -21,7 +21,7 @@ GameOfLifeGraphicsScene::GameOfLifeGraphicsScene(QObject *parent)
 
 GameOfLifeGraphicsScene::GameOfLifeGraphicsScene(QMainWindow *parent)
 {
-    this->height = 700;
+    this->height = 670;
     this->width = 1380;
 }
 

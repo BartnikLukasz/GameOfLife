@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1388</width>
-    <height>793</height>
+    <width>1407</width>
+    <height>790</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,14 +19,11 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>1391</width>
-      <height>751</height>
+      <width>1401</width>
+      <height>741</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="0">
-      <widget class="QGraphicsView" name="graphicsView"/>
-     </item>
      <item row="1" column="0">
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
@@ -51,6 +48,23 @@
         </widget>
        </item>
        <item>
+        <widget class="QPushButton" name="randomButton">
+         <property name="text">
+          <string>Random</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="sizeComboBox"/>
+       </item>
+      </layout>
+     </item>
+     <item row="0" column="0">
+      <widget class="QGraphicsView" name="graphicsView"/>
+     </item>
+     <item row="2" column="0">
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
         <widget class="QRadioButton" name="agingRadio">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
@@ -64,14 +78,14 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="randomButton">
+        <widget class="QPushButton" name="saveCurrentButton">
          <property name="text">
-          <string>Random</string>
+          <string>Save current</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="sizeComboBox"/>
+        <widget class="QComboBox" name="algorithmComboBox"/>
        </item>
       </layout>
      </item>
@@ -83,7 +97,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1388</width>
+     <width>1407</width>
      <height>21</height>
     </rect>
    </property>
