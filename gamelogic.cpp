@@ -170,9 +170,9 @@ void GameLogic::nextStep(GameWindow *gameWindow, bool aging) {
     }
 
     nextLogicStep(gameWindow, aging);
-    gameWindow->getBoard()->drawCells(this->gameState, this->cellsInRow);
+    gameWindow->getBoard()->drawCells(this->gameState, this->cellsInRow);   //Narysuj nowy stan planszy
 
-    QTimer::singleShot(200, gameWindow, SLOT(initializeNextStep()));
+    QTimer::singleShot(200, gameWindow, SLOT(initializeNextStep()));        //Wykonywanie metody co 200ms
 
     gameWindow->updateUI();
 }
