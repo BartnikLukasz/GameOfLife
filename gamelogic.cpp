@@ -4,12 +4,15 @@
 #include "random"
 #include "converters.h"
 
+#include <QTimer>
 #include <vector>
 
 using namespace std;
 
 GameLogic::GameLogic()
 {
+    this->gameActive = false;
+    this->algorithmType = 0;
 }
 
 vector<vector<AgingCell> > GameLogic::calculateNextStep(vector<vector<AgingCell> > &currentState,  bool aging)
@@ -159,8 +162,23 @@ vector<vector<AgingCell> > GameLogic::calculateNextStep(vector<vector<AgingCell>
     return nextState;
 }
 
-void GameLogic::nextStep(GameWindow *gameWindow, bool aging)
+void GameLogic::nextStep(GameWindow *gameWindow, bool aging) {
+
+    if (!gameActive) {
+        return;
+    }
+
+    nextLogicStep(gameWindow, aging);
+    gameWindow->getBoard()->drawCells(this->gameState, this->cellsInRow);
+
+    QTimer::singleShot(200, gameWindow, SLOT(initializeNextStep()));
+
+    gameWindow->updateUI();
+}
+
+void GameLogic::nextLogicStep(GameWindow *gameWindow, bool aging)
 {
+    cout<<algorithmType;
     this->gameState = calculateNextStep(this->gameState, aging);
     gameWindow->updateUI();
 }
@@ -190,4 +208,19 @@ void GameLogic::reload(GameWindow *gameWindow) {
     this->columns = this->cellsInRow;
     this->rows = gameWindow->getChosenNumberOfCellsInColumn();
     this->gameState = vector<vector<AgingCell>>(columns, vector<AgingCell>(rows, AgingCell()));
+}
+
+void GameLogic::pause()
+{
+    this->gameActive = false;
+}
+
+void GameLogic::unpause()
+{
+    this->gameActive = true;
+}
+
+bool GameLogic::isGameActive()
+{
+    return gameActive;
 }

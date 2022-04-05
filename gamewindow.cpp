@@ -16,13 +16,12 @@ using namespace std;
 extern GameLogic * gameLogic;
 
 QStringList sizes = {"60x30", "30x15", "80x40"};
-QStringList algorithms = {"Normal", "Die easier", "Die harder"};
+QStringList algorithms = {"Normal", "Die harder", "Die easier"};
 
 GameWindow::GameWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::GameWindow)
 {
-    gameActive = false;
     ui->setupUi(this);
     ui->sizeComboBox->addItems(sizes);
     ui->algorithmComboBox->addItems(algorithms);
@@ -44,6 +43,16 @@ void GameWindow::drawEmptyBoard() {
     gameLogic->reload(this);
     gameLogic->createBoard(getChosenNumberOfCellsInRow());
     board->drawCells(gameLogic->gameState, gameLogic->cellsInRow);
+}
+
+GameOfLifeGraphicsScene *GameWindow::getBoard()
+{
+    return this->board;
+}
+
+void GameWindow::initializeNextStep()
+{
+    gameLogic->nextStep(this, ui->agingRadio->isChecked());
 }
 
 void GameWindow::toggleCell(int x, int y, GameOfLifeGraphicsScene *board)
@@ -72,33 +81,21 @@ void GameWindow::updateUI()
 }
 
 void GameWindow::startGame() {
-    unpause();
-    nextStep();
+    gameLogic->unpause();
+    initializeNextStep();
 }
 
-void GameWindow::nextStep() {
-
-    if (!gameActive) {
-        return;
-    }
-
-    gameLogic->nextStep(this, ui->agingRadio->isChecked());
-    board->drawCells(gameLogic->gameState, gameLogic->cellsInRow);
-
-    QTimer::singleShot(500, this, SLOT(nextStep()));
-
-    ui->graphicsView->update();
-}
+//POMYSL przeniesienie tych klas logicznych do GameLogic
 
 void GameWindow::startStopButton_clicked()
 {
-    if(!gameActive) {
+    if(!gameLogic->isGameActive()) {
         gameLogic->gameStartingState = gameLogic->gameState;
         ui->startStopButton->setText("Stop");
         startGame();
     }
     else {
-        pause();
+        gameLogic->pause();
         ui->startStopButton->setText("Start");
     }
 }
@@ -115,7 +112,7 @@ void GameWindow::saveButton_clicked()
 
 void GameWindow::loadButton_clicked()
 {
-    pause();
+    gameLogic->pause();
     if(loadStartingState()) {
         gameLogic->gameState = gameLogic->gameStartingState;
         board->drawCells(gameLogic->gameState, gameLogic->cellsInRow);
@@ -215,14 +212,6 @@ bool GameWindow::loadStartingState() {
     }
 }
 
-void GameWindow::pause() {
-    gameActive = false;
-}
-
-void GameWindow::unpause() {
-    gameActive = true;
-}
-
 short GameWindow::getChosenNumberOfCellsInRow() {
     switch(ui->sizeComboBox->currentIndex()) {
         case 0:
@@ -269,6 +258,7 @@ void GameWindow::connectSignalsAndSlots() {
     QObject::connect(ui->startStopButton, SIGNAL(clicked()), this, SLOT(startStopButton_clicked()));
     QObject::connect(ui->randomButton, SIGNAL(clicked()), this, SLOT(randomButton_clicked()));
     QObject::connect(ui->sizeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(sizeComboBox_currentIndexChanged(int)));
+    QObject::connect(ui->algorithmComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(algorithmComboBox_currentIndexChanged(int)));
 }
 
 

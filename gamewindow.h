@@ -29,9 +29,12 @@ public:
     short getChosenNumberOfCellsInRow();
     short getChosenNumberOfCellsInColumn();
     void drawEmptyBoard();
-private slots:
+    GameOfLifeGraphicsScene *getBoard();
 
-    void nextStep();
+public slots:
+    void initializeNextStep();
+
+private slots:
 
     void saveButton_clicked();
 
@@ -52,12 +55,9 @@ private:
     GameOfLifeGraphicsScene *board;
     QPixmap image;
 
-    bool gameActive;
     bool saveStartingState();
     bool saveCurrentState();
     bool loadStartingState();
-    void pause();
-    void unpause();
     void connectSignalsAndSlots();
 };
 #endif // GAMEWINDOW_H

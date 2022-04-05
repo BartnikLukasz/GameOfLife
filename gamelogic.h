@@ -17,7 +17,7 @@ public:
     GameLogic();
 
     vector<vector<AgingCell>> calculateNextStep(vector<vector<AgingCell>>& currentState, bool aging); // calculating next step based on its current state
-    void nextStep(GameWindow *gameWindow, bool aging);
+    void nextLogicStep(GameWindow *gameWindow, bool aging);
     void createBoard(short AgingCellsInRow);
 
     vector<vector<AgingCell>> gameState;
@@ -31,7 +31,16 @@ public:
     void randomizeGameState();
 
     void reload(GameWindow *gameWindow);
+    void pause();
+    void unpause();
+    bool isGameActive();
+
+public slots:
+
+    void nextStep(GameWindow *gameWindow, bool aging);
+
 private:
+    bool gameActive;
     short columns;
     short rows;
 };
