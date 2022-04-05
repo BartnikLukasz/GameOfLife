@@ -15,7 +15,7 @@ void AgingCell::setAge(short age) {
 }
 
 void AgingCell::beBorn() {
-    if(this->cellAge.getAge() == -1) {
+    if(this->cellAge.getAge() == -1) { //Jeżeli wiek -1, to znaczy że komórka umarła ze starości i ma się w tej chwili nie rodzić.
         return;
     }
     this->alive = true;

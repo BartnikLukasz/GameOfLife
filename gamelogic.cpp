@@ -17,17 +17,17 @@ GameLogic::GameLogic()
 
 vector<vector<AgingCell> > GameLogic::calculateNextStep(vector<vector<AgingCell> > &currentState,  bool aging)
 {
-    vector<vector<AgingCell>> nextState(columns, vector<AgingCell>(rows, AgingCell())); //creating matrix representing state of the game
+    vector<vector<AgingCell>> nextState(columns, vector<AgingCell>(rows, AgingCell())); //utworzenie macierzy reprezentującej planszę
 
     for(int i = 0; i < currentState.size(); i++) {
 
         for(int j = 0; j < currentState[i].size(); j++) {
 
-            if(currentState[i][j].isAlive()) {
-                if(aging){
+            if(currentState[i][j].isAlive()) { //Jeżeli komórka jest żywa
+                if(aging){                      //Jeżeli starzenie się jest włączone, postarz komórkę
                     currentState[i][j].getOlder();
                 }
-                else {
+                else {                          //Jeżeli starzenie się jest wyłączone, konwertuj między klasami i wywołaj metodę klasy która się nie starzeje
                     LivingCell livingCell = cvt::convertAgingCellToLivingCell(currentState[i][j]);
                     livingCell.getOlder();
                     currentState[i][j] = cvt::convertLivingCellToAgingCell(livingCell);
@@ -38,7 +38,7 @@ vector<vector<AgingCell> > GameLogic::calculateNextStep(vector<vector<AgingCell>
 
     }
 
-
+    //Zliczanie żyjących sąsiadów
     for(int i = 0; i < nextState.size(); i++) {
 
         for(int j = 0; j < nextState[i].size(); j++) {
@@ -46,38 +46,39 @@ vector<vector<AgingCell> > GameLogic::calculateNextStep(vector<vector<AgingCell>
             short numberOfAliveNeighbors = 0;
 
             if(i == 0 && j == 0) {
-                numberOfAliveNeighbors += currentState[0][1].isAlive() + currentState[1][0].isAlive() + currentState[1][1].isAlive(); //top left corner
+                numberOfAliveNeighbors += currentState[0][1].isAlive() + currentState[1][0].isAlive() + currentState[1][1].isAlive();           //Lewy górny róg
             }
             else if(i == 0 && j == rows-1) {
-                numberOfAliveNeighbors += currentState[0][j-1].isAlive() + currentState[1][j-1].isAlive() + currentState[1][j].isAlive(); //bottom left corner
+                numberOfAliveNeighbors += currentState[0][j-1].isAlive() + currentState[1][j-1].isAlive() + currentState[1][j].isAlive();       //Lewy dolny róg
             }
             else if(i == columns-1 && j == 0) {
-                numberOfAliveNeighbors += currentState[i-1][0].isAlive() + currentState[i-1][1].isAlive() + currentState[i][1].isAlive(); //top right corner
+                numberOfAliveNeighbors += currentState[i-1][0].isAlive() + currentState[i-1][1].isAlive() + currentState[i][1].isAlive();       //Prawy górny róg
             }
             else if(i == columns-1 && j == rows-1) {
-                numberOfAliveNeighbors += currentState[i-1][j].isAlive() + currentState[i-1][j-1].isAlive() + currentState[i][j-1].isAlive(); // bottom right corner
+                numberOfAliveNeighbors += currentState[i-1][j].isAlive() + currentState[i-1][j-1].isAlive() + currentState[i][j-1].isAlive();   //Prawy dolny róg
             }
             else if(i == 0) {
                 numberOfAliveNeighbors += currentState[0][j-1].isAlive() + currentState[1][j-1].isAlive() + currentState[1][j].isAlive() +
-                        currentState[1][j+1].isAlive() + currentState[0][j+1].isAlive(); // left border
+                        currentState[1][j+1].isAlive() + currentState[0][j+1].isAlive();                                                        //Lewy brzeg
             }
             else if(j == 0) {
                 numberOfAliveNeighbors += currentState[i-1][0].isAlive() + currentState[i-1][1].isAlive() + currentState[i][1].isAlive() +
-                        currentState[i+1][1].isAlive() + currentState[i+1][0].isAlive(); // top border
+                        currentState[i+1][1].isAlive() + currentState[i+1][0].isAlive();                                                        //Górny brzeg
             }
             else if(i == columns-1) {
                 numberOfAliveNeighbors += currentState[i][j-1].isAlive() + currentState[i-1][j-1].isAlive() + currentState[i-1][j].isAlive() +
-                        currentState[i-1][j+1].isAlive() + currentState[i][j+1].isAlive(); // right border
+                        currentState[i-1][j+1].isAlive() + currentState[i][j+1].isAlive();                                                      //Prawy brzeg
             }
             else if(j == rows-1) {
                 numberOfAliveNeighbors += currentState[i-1][j].isAlive() + currentState[i-1][j-1].isAlive() + currentState[i][j-1].isAlive() +
-                        currentState[i+1][j-1].isAlive() + currentState[i+1][j].isAlive(); //bottom border
+                        currentState[i+1][j-1].isAlive() + currentState[i+1][j].isAlive();                                                      //Dolny brzeg
             }
             else {
                 numberOfAliveNeighbors += currentState[i-1][j-1].isAlive() + currentState[i][j-1].isAlive() + currentState[i+1][j-1].isAlive() + currentState[i+1][j].isAlive() +
-                        currentState[i+1][j+1].isAlive() + currentState[i][j+1].isAlive() + currentState[i-1][j+1].isAlive() + currentState[i-1][j].isAlive(); // middle
+                        currentState[i+1][j+1].isAlive() + currentState[i][j+1].isAlive() + currentState[i-1][j+1].isAlive() + currentState[i-1][j].isAlive(); //Środek
             }
 
+            //Ustawianie stanu komórki zależnie od ilości żywych sąsiadów
             switch (this->algorithmType) {
                 case 0:                                                                 //zwykłe zasady
                     if(currentState[i][j].isAlive()) {
@@ -178,7 +179,6 @@ void GameLogic::nextStep(GameWindow *gameWindow, bool aging) {
 
 void GameLogic::nextLogicStep(GameWindow *gameWindow, bool aging)
 {
-    cout<<algorithmType;
     this->gameState = calculateNextStep(this->gameState, aging);
     gameWindow->updateUI();
 }

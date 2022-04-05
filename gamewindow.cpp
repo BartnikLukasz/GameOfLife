@@ -52,7 +52,7 @@ GameOfLifeGraphicsScene *GameWindow::getBoard()
 
 void GameWindow::initializeNextStep()
 {
-    gameLogic->nextStep(this, ui->agingRadio->isChecked());
+    gameLogic->nextStep(this, ui->agingRadio->isChecked()); //Wywoływanie metody nextStep jest tutaj, aby mogło byc slotem
 }
 
 void GameWindow::toggleCell(int x, int y, GameOfLifeGraphicsScene *board)
@@ -61,15 +61,12 @@ void GameWindow::toggleCell(int x, int y, GameOfLifeGraphicsScene *board)
 
     short row = x / cellSize;
     short column = y / cellSize;
-    if(gameLogic->gameState[row][column].isAlive()) {
+    if(gameLogic->gameState[row][column].isAlive()) { //Jeżeli kliknięta komórka jest żywa, to ma umrzeć i odwrotnie
         gameLogic->gameState[row][column].die();
     }
     else {
         gameLogic->gameState[row][column].beBorn();
     }
-    cout<< "Row: "<<row<<endl;
-    cout<< "Column: "<<column<<endl;
-    cout<<gameLogic->gameState[row][column].isAlive();
     board->drawCells(gameLogic->gameState, gameLogic->cellsInRow);
 
     this->update();
@@ -82,10 +79,8 @@ void GameWindow::updateUI()
 
 void GameWindow::startGame() {
     gameLogic->unpause();
-    initializeNextStep();
+    initializeNextStep();   //Wywołanie początku gry
 }
-
-//POMYSL przeniesienie tych klas logicznych do GameLogic
 
 void GameWindow::startStopButton_clicked()
 {
@@ -103,7 +98,7 @@ void GameWindow::startStopButton_clicked()
 
 void GameWindow::saveButton_clicked()
 {
-    if(gameLogic->gameStartingState.empty()) {
+    if(gameLogic->gameStartingState.empty()) {  //Jeżeli początkowy stan gry jest pusty, niech będzie wypełniony aktualnym stanem gry
         gameLogic->gameStartingState = gameLogic->gameState;
     }
     saveStartingState();
@@ -115,7 +110,7 @@ void GameWindow::loadButton_clicked()
     gameLogic->pause();
     if(loadStartingState()) {
         gameLogic->gameState = gameLogic->gameStartingState;
-        board->drawCells(gameLogic->gameState, gameLogic->cellsInRow);
+        board->drawCells(gameLogic->gameState, gameLogic->cellsInRow);  //Narysowanie planszy od nowa po wczytaniu stanu gry
     }
 }
 
@@ -134,6 +129,7 @@ void GameWindow::saveCurrentButton_clicked()
     saveCurrentState();
 }
 
+//Kod zaczerpnięty ze strony dokumentacji QT
 bool GameWindow::saveStartingState() {
 
     QString fileName = QFileDialog::getSaveFileName(this,
@@ -152,6 +148,7 @@ bool GameWindow::saveStartingState() {
 
     QDataStream out(&file);
     out.setVersion(QDataStream::Qt_6_2);
+    //Zapisać w ten sposób mogę tylko QVector<QVector<bool>>, więc konwertuję stan gry na ten typ
     QVector<QVector<bool>> savedStartingState = cvt::std2DVectorTo2DQVector(cvt::convertAgingCellToBool(gameLogic->gameStartingState));
     out << savedStartingState;
 
@@ -159,6 +156,7 @@ bool GameWindow::saveStartingState() {
     }
 }
 
+//Kod zaczerpnięty ze strony dokumentacji QT
 bool GameWindow::saveCurrentState() {
 
     QString fileName = QFileDialog::getSaveFileName(this,
@@ -184,6 +182,7 @@ bool GameWindow::saveCurrentState() {
     }
 }
 
+//Kod zaczerpnięty ze strony dokumentacji QT
 bool GameWindow::loadStartingState() {
 
     QString fileName = QFileDialog::getOpenFileName(this,
@@ -207,12 +206,13 @@ bool GameWindow::loadStartingState() {
             QVector<QVector<bool>> loadedStartingState;
             in >> loadedStartingState;
 
+            //Przypisanie wczytanego stanu gry do gameStartingState
             gameLogic->gameStartingState = cvt::convertBoolToAgingCell(cvt::qVectorToStd2DVector(loadedStartingState));
             return true;
     }
 }
 
-short GameWindow::getChosenNumberOfCellsInRow() {
+short GameWindow::getChosenNumberOfCellsInRow() {   //Zależnie od wybranej opcji zwraca odpowiednią ilość komórek w rzędzie
     switch(ui->sizeComboBox->currentIndex()) {
         case 0:
             return 60;
@@ -225,7 +225,7 @@ short GameWindow::getChosenNumberOfCellsInRow() {
     }
 }
 
-short GameWindow::getChosenNumberOfCellsInColumn() {
+short GameWindow::getChosenNumberOfCellsInColumn() {    //Zależnie od wybranej opcji zwraca odpowiednią ilość komórek w kolumnie
     switch(ui->sizeComboBox->currentIndex()) {
         case 0:
             return 30;
@@ -251,6 +251,7 @@ void GameWindow::algorithmComboBox_currentIndexChanged(int index)
     gameLogic->algorithmType = index;
 }
 
+//Przypisanie sygnałów do slotów w osobnej funkcji
 void GameWindow::connectSignalsAndSlots() {
     QObject::connect(ui->saveButton, SIGNAL(clicked()), this, SLOT(saveButton_clicked()));
     QObject::connect(ui->saveCurrentButton, SIGNAL(clicked()), this, SLOT(saveCurrentButton_clicked()));

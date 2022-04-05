@@ -15,7 +15,6 @@ int main(int argc, char *argv[])
     gameLogic = new GameLogic();
 
     gameWindow->drawEmptyBoard();
-    //gameWindow->resize(1280, 720);
     gameWindow->show();
     return a.exec();
 }

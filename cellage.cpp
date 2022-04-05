@@ -7,10 +7,10 @@ CellAge::CellAge()
 }
 
 void CellAge::addAge() {
-    if(age < 5 && age >= 0) {
+    if(age < 5 && age >= 0) { //W wieku od 0 do 5 komórka ma się starzeć
         age++;
     }
-    else if(age == 5) {
+    else if(age == 5) { //Jeżeli komórka ma wiek równy 5, nie rób nic
         return;
     }
     else {
@@ -23,10 +23,10 @@ short CellAge::getAge() {
 }
 
 void CellAge::setAge(short age) {
-    if(age < 5 && age >= 0) {
+    if(age < 5 && age >= 0) { //Dla wieku od 0 do 5 ustaw wiek
         this->age = age;
     }
-    else if(age == 5) {
+    else if(age == 5) { //Dla wieku 5 ustaw wiek na -1, bo komórka umarła ze starości
         this->age = -1;
     }
     else {
