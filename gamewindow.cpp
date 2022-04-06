@@ -25,6 +25,7 @@ GameWindow::GameWindow(QWidget *parent)
     ui->setupUi(this);
     ui->sizeComboBox->addItems(sizes);
     ui->algorithmComboBox->addItems(algorithms);
+    ui->timeEdit->setValidator(new QIntValidator(20, 5000, this));
 
     board = new GameOfLifeGraphicsScene(this);
     ui->graphicsView->setScene(board);
@@ -48,6 +49,11 @@ void GameWindow::drawEmptyBoard() {
 GameOfLifeGraphicsScene *GameWindow::getBoard()
 {
     return this->board;
+}
+
+int GameWindow::getTimeBetweenStepsValue()
+{
+    return ui->timeEdit->text().toInt();
 }
 
 void GameWindow::initializeNextStep()
@@ -227,10 +233,7 @@ bool GameWindow::loadStartingState() {
             in >> loadedStartingState;
 
             //Przypisanie wczytanego stanu gry do gameStartingState
-            vector<vector<AgingCell>> tempVector = cvt::convertBoolToAgingCell(cvt::qVectorToStd2DVector(loadedStartingState));
-            cout<<"Temp size"<<tempVector.size();
-            cout<<endl<<"Board size"<<gameLogic->gameStartingState.size();
-            gameLogic->gameStartingState = tempVector;
+            gameLogic->gameStartingState = cvt::convertBoolToAgingCell(cvt::qVectorToStd2DVector(loadedStartingState));
             return true;
     }
 }

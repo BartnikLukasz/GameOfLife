@@ -83,6 +83,14 @@ public:
      */
     GameOfLifeGraphicsScene *getBoard();
 
+    /*!
+     * \brief Metoda getTimeBetweenStepsValue
+     *
+     * Zwraca wartość wpisaną przez użytkownika do pola czasu.
+     * \return wartość czasu w ms pomiędzy krokami.
+     */
+    int getTimeBetweenStepsValue();
+
 public slots:
     /*!
      * \brief Metoda SLOT initializeNextStep

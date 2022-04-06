@@ -85,6 +85,35 @@
         </widget>
        </item>
        <item>
+        <widget class="QLabel" name="label">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>Czas pomiędzy krokami (ms):</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="timeEdit">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>200</string>
+         </property>
+         <property name="placeholderText">
+          <string>Czas pomiędzy krokami w ms</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QComboBox" name="algorithmComboBox"/>
        </item>
       </layout>
