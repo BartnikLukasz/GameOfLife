@@ -109,6 +109,26 @@ void GameWindow::loadButton_clicked()
 {
     gameLogic->pause();
     if(loadStartingState()) {
+        if(gameLogic->gameStartingState.size() != gameLogic->cellsInRow) {  //Jeżeli wielkośc planszy załadowanej gry jest inna niż wybrana wielkość planszy, zmień wielkość planszy
+            switch(gameLogic->gameStartingState.size()) {
+                case 60:
+                    ui->sizeComboBox->setCurrentIndex(0);
+                    gameLogic->reload(this);
+                break;
+                case 30:
+                    ui->sizeComboBox->setCurrentIndex(1);
+                    gameLogic->reload(this);
+                break;
+                case 80:
+                    ui->sizeComboBox->setCurrentIndex(2);
+                    gameLogic->reload(this);
+                break;
+                default:
+                    ui->sizeComboBox->setCurrentIndex(0);
+                    gameLogic->reload(this);
+                break;
+            }
+        }
         gameLogic->gameState = gameLogic->gameStartingState;
         board->drawCells(gameLogic->gameState, gameLogic->cellsInRow);  //Narysowanie planszy od nowa po wczytaniu stanu gry
     }
@@ -207,7 +227,10 @@ bool GameWindow::loadStartingState() {
             in >> loadedStartingState;
 
             //Przypisanie wczytanego stanu gry do gameStartingState
-            gameLogic->gameStartingState = cvt::convertBoolToAgingCell(cvt::qVectorToStd2DVector(loadedStartingState));
+            vector<vector<AgingCell>> tempVector = cvt::convertBoolToAgingCell(cvt::qVectorToStd2DVector(loadedStartingState));
+            cout<<"Temp size"<<tempVector.size();
+            cout<<endl<<"Board size"<<gameLogic->gameStartingState.size();
+            gameLogic->gameStartingState = tempVector;
             return true;
     }
 }
