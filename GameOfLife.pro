@@ -16,7 +16,6 @@ SOURCES += \
     gamelogic.cpp \
     gameoflifegraphicsscene.cpp \
     gamewindow.cpp \
-    livingcell.cpp \
     main.cpp
 
 HEADERS += \
@@ -26,8 +25,7 @@ HEADERS += \
     converters.h \
     gamelogic.h \
     gameoflifegraphicsscene.h \
-    gamewindow.h \
-    livingcell.h
+    gamewindow.h
 
 FORMS += \
     gamewindow.ui

@@ -7,15 +7,15 @@ using namespace std;
 
 namespace converters {
 
-    vector<vector<bool>> convertAgingCellToBool(vector<vector<AgingCell>> agingCellGameState) {
+    vector<vector<bool>> convertCellToBool(vector<vector<Cell*>> cellGameState) {
 
-        vector<vector<bool>> returnedVector = vector<vector<bool>>(agingCellGameState.size(), vector<bool>(agingCellGameState[0].size(), false));
+        vector<vector<bool>> returnedVector = vector<vector<bool>>(cellGameState.size(), vector<bool>(cellGameState[0].size(), false));
 
-        for(int i = 0; i < agingCellGameState.size(); i++) {
+        for(int i = 0; i < cellGameState.size(); i++) {
 
-            for(int j = 0; j<agingCellGameState[i].size(); j++) {
+            for(int j = 0; j<cellGameState[i].size(); j++) {
 
-                returnedVector[i][j] = agingCellGameState[i][j].isAlive();
+                returnedVector[i][j] = cellGameState[i][j]->isAlive();
 
             }
         }
@@ -23,19 +23,19 @@ namespace converters {
         return returnedVector;
     }
 
-    vector<vector<AgingCell>> convertBoolToAgingCell(vector<vector<bool>> boolGameState) {
+    vector<vector<Cell*>> convertBoolToCell(vector<vector<bool>> boolGameState) {
 
-        vector<vector<AgingCell>> returnedVector = vector<vector<AgingCell>>(boolGameState.size(), vector<AgingCell>(boolGameState[0].size(), AgingCell()));
+        vector<vector<Cell*>> returnedVector = vector<vector<Cell*>>(boolGameState.size(), vector<Cell*>(boolGameState[0].size(), new Cell()));
 
         for(int i = 0; i < boolGameState.size(); i++) {
 
             for(int j = 0; j<boolGameState[i].size(); j++) {
 
                 if(boolGameState[i][j]) {
-                    returnedVector[i][j].beBorn();
+                    returnedVector[i][j]->beBorn();
                 }
                 else {
-                    returnedVector[i][j].die();
+                    returnedVector[i][j]->die();
                 }
             }
         }
@@ -69,18 +69,6 @@ namespace converters {
         }
 
         return returnedVector;
-    }
-
-    AgingCell convertLivingCellToAgingCell(LivingCell livingCell) {
-        AgingCell agingCell = AgingCell();
-        agingCell.stayAlive(livingCell.getAge());
-        return agingCell;
-    }
-
-    LivingCell convertAgingCellToLivingCell(AgingCell agingCell) {
-        LivingCell livingCell = LivingCell();
-        livingCell.stayAlive(agingCell.getAge());
-        return livingCell;
     }
 }
 

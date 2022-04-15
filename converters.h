@@ -22,7 +22,7 @@ namespace converters {
      * \param agingCellGameState vector obiektów AgingCell
      * \return vector typów bool
      */
-    vector<vector<bool>> convertAgingCellToBool(vector<vector<AgingCell>> agingCellGameState);
+    vector<vector<bool>> convertCellToBool(vector<vector<Cell*>> cellGameState);
 
     /*!
      * \brief Metoda convertBoolToAgingCell
@@ -31,7 +31,7 @@ namespace converters {
      * \param boolGameState vector typów bool
      * \return vector obiektów AgingCell
      */
-    vector<vector<AgingCell>> convertBoolToAgingCell(vector<vector<bool>> boolGameState);
+    vector<vector<Cell*>> convertBoolToCell(vector<vector<bool>> boolGameState);
 
     /*!
      * \brief Metoda std2DVectorTo2DQVector
@@ -50,24 +50,6 @@ namespace converters {
      * \return  vector typów bool;
      */
     vector<vector<bool>> qVectorToStd2DVector(QVector<QVector<bool>> qVector);
-
-    /*!
-     * \brief Metoda convertLivingCellToAgingCell
-     *
-     * Konwertuje obiekt klasy LivingCell na obiekt klasy AgingCell
-     * \param livingCell obiekt klasy LivingCell
-     * \return obiekt klasy AgingCell
-     */
-    AgingCell convertLivingCellToAgingCell(LivingCell livingCell);
-
-    /*!
-     * \brief Metoda convertAgingCellToLivingCell
-     *
-     * Konwertuje obiekt klasy AgingCell na obiekt klasy LivingCell
-     * \param agingCell obiekt klasy AgingCell
-     * \return obiekt klasy LivingCell
-     */
-    LivingCell convertAgingCellToLivingCell(AgingCell agingCell);
 
 }
 

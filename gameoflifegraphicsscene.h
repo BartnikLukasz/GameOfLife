@@ -51,7 +51,7 @@ public:
      * \param gameState aktualny stan planszy.
      * \param cellsInRow ilość komórek w rzędzie.
      */
-    void drawCells(vector<vector<AgingCell> > gameState, short cellsInRow);
+    void drawCells(vector<vector<Cell*> > gameState, short cellsInRow);
 
     /*!
      * \brief Pole width

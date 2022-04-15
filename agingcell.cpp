@@ -3,24 +3,13 @@
 AgingCell::AgingCell()
     : Cell()
 {
-    cellAge = CellAge();
+
 }
 
-short AgingCell::getAge() {
-    return cellAge.getAge();
+AgingCell::~AgingCell() {
+
 }
 
-void AgingCell::setAge(short age) {
-    cellAge.setAge(age);
-}
-
-void AgingCell::beBorn() {
-    if(this->cellAge.getAge() == -1) { //Jeżeli wiek -1, to znaczy że komórka umarła ze starości i ma się w tej chwili nie rodzić.
-        return;
-    }
-    this->alive = true;
-    setAge(1);
-}
 
 void AgingCell::getOlder() {
     cellAge.addAge();
@@ -29,8 +18,4 @@ void AgingCell::getOlder() {
     }
 }
 
-void AgingCell::stayAlive(short currentAge) {
-    this->alive = true;
-    setAge(currentAge);
-}
 

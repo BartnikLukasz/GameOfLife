@@ -90,6 +90,13 @@ public:
      * \return wartość czasu w ms pomiędzy krokami.
      */
     int getTimeBetweenStepsValue();
+    /*!
+     * \brief Metoda isAgingChecked
+     *
+     * Sprawdza, czy zaznaczone jest starzenie się komórek
+     * \return True jeżeli pole jest zaznaczone, False jeżeli tak nie jest
+     */
+    bool isAgingChecked();
 
 public slots:
     /*!

@@ -42,7 +42,6 @@ GameWindow::~GameWindow()
 
 void GameWindow::drawEmptyBoard() {
     gameLogic->reload(this);
-    gameLogic->createBoard(getChosenNumberOfCellsInRow());
     board->drawCells(gameLogic->gameState, gameLogic->cellsInRow);
 }
 
@@ -56,9 +55,14 @@ int GameWindow::getTimeBetweenStepsValue()
     return ui->timeEdit->text().toInt();
 }
 
+bool GameWindow::isAgingChecked()
+{
+    return ui->agingRadio->isChecked();
+}
+
 void GameWindow::initializeNextStep()
 {
-    gameLogic->nextStep(this, ui->agingRadio->isChecked()); //Wywoływanie metody nextStep jest tutaj, aby mogło byc slotem
+    gameLogic->nextStep(this, isAgingChecked()); //Wywoływanie metody nextStep jest tutaj, aby mogło byc slotem
 }
 
 void GameWindow::toggleCell(int x, int y, GameOfLifeGraphicsScene *board)
@@ -67,11 +71,11 @@ void GameWindow::toggleCell(int x, int y, GameOfLifeGraphicsScene *board)
 
     short row = x / cellSize;
     short column = y / cellSize;
-    if(gameLogic->gameState[row][column].isAlive()) { //Jeżeli kliknięta komórka jest żywa, to ma umrzeć i odwrotnie
-        gameLogic->gameState[row][column].die();
+    if(gameLogic->gameState[row][column]->isAlive()) { //Jeżeli kliknięta komórka jest żywa, to ma umrzeć i odwrotnie
+        gameLogic->gameState[row][column]->die();
     }
     else {
-        gameLogic->gameState[row][column].beBorn();
+        gameLogic->gameState[row][column]->beBorn();
     }
     board->drawCells(gameLogic->gameState, gameLogic->cellsInRow);
 
@@ -175,7 +179,7 @@ bool GameWindow::saveStartingState() {
     QDataStream out(&file);
     out.setVersion(QDataStream::Qt_6_2);
     //Zapisać w ten sposób mogę tylko QVector<QVector<bool>>, więc konwertuję stan gry na ten typ
-    QVector<QVector<bool>> savedStartingState = cvt::std2DVectorTo2DQVector(cvt::convertAgingCellToBool(gameLogic->gameStartingState));
+    QVector<QVector<bool>> savedStartingState = cvt::std2DVectorTo2DQVector(cvt::convertCellToBool(gameLogic->gameStartingState));
     out << savedStartingState;
 
     return true;
@@ -201,7 +205,7 @@ bool GameWindow::saveCurrentState() {
 
     QDataStream out(&file);
     out.setVersion(QDataStream::Qt_6_2);
-    QVector<QVector<bool>> savedState = cvt::std2DVectorTo2DQVector(cvt::convertAgingCellToBool(gameLogic->gameState));
+    QVector<QVector<bool>> savedState = cvt::std2DVectorTo2DQVector(cvt::convertCellToBool(gameLogic->gameState));
     out << savedState;
 
     return true;
@@ -233,7 +237,7 @@ bool GameWindow::loadStartingState() {
             in >> loadedStartingState;
 
             //Przypisanie wczytanego stanu gry do gameStartingState
-            gameLogic->gameStartingState = cvt::convertBoolToAgingCell(cvt::qVectorToStd2DVector(loadedStartingState));
+            gameLogic->gameStartingState = cvt::convertBoolToCell(cvt::qVectorToStd2DVector(loadedStartingState));
             return true;
     }
 }

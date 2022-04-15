@@ -35,7 +35,7 @@ void GameOfLifeGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
     gameWindow->toggleCell(event->scenePos().x(), event->scenePos().y(), this);
 }
 
-void GameOfLifeGraphicsScene::drawCells(vector<vector<AgingCell>> gameState, short cellsInRow)
+void GameOfLifeGraphicsScene::drawCells(vector<vector<Cell*>> gameState, short cellsInRow)
 {
     short cellSize = width / cellsInRow;
     short cellsInColumn = height / cellSize;
@@ -55,8 +55,8 @@ void GameOfLifeGraphicsScene::drawCells(vector<vector<AgingCell>> gameState, sho
             QRect *cell = new QRect(QPoint(i*cellSize, j*cellSize), QPoint(((i+1)*cellSize)-2, ((j+1)*cellSize)-2)); //Tworzenie prostokąta reprezentującego komórkę na planszy o wielkości
                                                                                                                      //o 2 piksele mniejszej, aby na planszy pozostały białe granice między komórkami
 
-            if(gameState[i][j].isAlive() && gameState[i][j].getAge()!=-1) {
-                short calculatedShade = gameState[i][j].getAge()*30 + 50;
+            if(gameState[i][j]->isAlive() && gameState[i][j]->getAge()!=-1) {
+                short calculatedShade = gameState[i][j]->getAge()*30 + 50;
                 painter.fillRect(*cell, qRgb(calculatedShade, calculatedShade, calculatedShade));       //Wypełnianie komórki kolorem zależnym od jej stanu i wieku
             }
             else {

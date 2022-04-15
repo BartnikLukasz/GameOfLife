@@ -34,7 +34,7 @@ public:
      * \param aging parametr zawierający informację, czy komórki mają się starzeć
      * \return vector obiektów klasy AgingCell będący oblczonym następnym stanem planszy
      */
-    vector<vector<AgingCell>> calculateNextStep(vector<vector<AgingCell>>& currentState, bool aging);
+    vector<vector<Cell*>> calculateNextStep(vector<vector<Cell*>>& currentState, bool aging);
     /*!
      * \brief Metoda nextLogicStep
      *
@@ -57,14 +57,14 @@ public:
      *
      * Zawiera aktualny stan planszy.
      */
-    vector<vector<AgingCell>> gameState;
+    vector<vector<Cell*>> gameState;
 
     /*!
      * \brief Pole gameStartingState
      *
      * Zawiera początkowy stan planszy. Służy do zapisania stanu początkowego nawet na koniec rozgrywki.
      */
-    vector<vector<AgingCell>> gameStartingState;
+    vector<vector<Cell*>> gameStartingState;
 
     /*!
      * \brief Pole cellsInRow
