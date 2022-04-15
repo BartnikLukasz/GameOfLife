@@ -106,7 +106,7 @@
           </sizepolicy>
          </property>
          <property name="text">
-          <string>200</string>
+          <string>500</string>
          </property>
          <property name="placeholderText">
           <string>Czas pomiędzy krokami w ms</string>

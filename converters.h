@@ -22,7 +22,7 @@ namespace converters {
      * \param agingCellGameState vector obiektów AgingCell
      * \return vector typów bool
      */
-    vector<vector<bool>> convertCellToBool(vector<vector<Cell*>> cellGameState);
+    vector<vector<bool>> convertCellToBool(vector<vector<shared_ptr<Cell>>> cellGameState);
 
     /*!
      * \brief Metoda convertBoolToAgingCell
@@ -31,7 +31,7 @@ namespace converters {
      * \param boolGameState vector typów bool
      * \return vector obiektów AgingCell
      */
-    vector<vector<Cell*>> convertBoolToCell(vector<vector<bool>> boolGameState);
+    vector<vector<shared_ptr<Cell>>> convertBoolToCell(vector<vector<bool>> boolGameState);
 
     /*!
      * \brief Metoda std2DVectorTo2DQVector

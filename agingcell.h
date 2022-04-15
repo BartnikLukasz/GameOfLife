@@ -18,7 +18,11 @@ public:
      * Poza tworzeniem obiektu klasy AgingCell przypisuje on również polu cellAge nowy obiekt klasy CellAge.
      */
     AgingCell();
-
+    /*!
+     * \brief Destruktor klasy AgingCell
+     *
+     * Podstawowy destruktor
+     */
     virtual ~AgingCell();
     /*!
      * \brief Metoda getOlder

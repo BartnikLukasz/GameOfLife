@@ -35,7 +35,7 @@ void GameOfLifeGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
     gameWindow->toggleCell(event->scenePos().x(), event->scenePos().y(), this);
 }
 
-void GameOfLifeGraphicsScene::drawCells(vector<vector<Cell*>> gameState, short cellsInRow)
+void GameOfLifeGraphicsScene::drawCells(const vector<vector<shared_ptr<Cell>>> &gameState, short cellsInRow)
 {
     short cellSize = width / cellsInRow;
     short cellsInColumn = height / cellSize;

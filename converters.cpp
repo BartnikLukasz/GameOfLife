@@ -7,7 +7,7 @@ using namespace std;
 
 namespace converters {
 
-    vector<vector<bool>> convertCellToBool(vector<vector<Cell*>> cellGameState) {
+    vector<vector<bool>> convertCellToBool(vector<vector<shared_ptr<Cell>>> cellGameState) {
 
         vector<vector<bool>> returnedVector = vector<vector<bool>>(cellGameState.size(), vector<bool>(cellGameState[0].size(), false));
 
@@ -23,9 +23,15 @@ namespace converters {
         return returnedVector;
     }
 
-    vector<vector<Cell*>> convertBoolToCell(vector<vector<bool>> boolGameState) {
+    vector<vector<shared_ptr<Cell>>> convertBoolToCell(vector<vector<bool>> boolGameState) {
 
-        vector<vector<Cell*>> returnedVector = vector<vector<Cell*>>(boolGameState.size(), vector<Cell*>(boolGameState[0].size(), new Cell()));
+        vector<vector<shared_ptr<Cell>>> returnedVector(boolGameState.size(), vector<shared_ptr<Cell>>(boolGameState[0].size()));
+
+        for(int i=0; i<returnedVector.size(); i++) {
+            vector<shared_ptr<Cell>> tempRow(boolGameState[0].size());
+            generate(tempRow.begin(), tempRow.end(), [] { return make_shared<Cell>(); });
+            returnedVector[i] = tempRow;
+        }
 
         for(int i = 0; i < boolGameState.size(); i++) {
 

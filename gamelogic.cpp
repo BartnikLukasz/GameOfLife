@@ -15,23 +15,21 @@ GameLogic::GameLogic()
     this->algorithmType = 0;
 }
 
-vector<vector<Cell*> > GameLogic::calculateNextStep(vector<vector<Cell*> > &currentState,  bool aging)
+vector<vector<shared_ptr<Cell>> > GameLogic::calculateNextStep(vector<vector<shared_ptr<Cell>> > &currentState,  bool aging)
 {
-    vector<vector<Cell*>> nextState(columns, vector<Cell*>(rows)); //utworzenie macierzy reprezentującej planszę
+    vector<vector<shared_ptr<Cell>>> nextState(columns, vector<shared_ptr<Cell>>(rows)); //utworzenie macierzy reprezentującej planszę
     if(aging) {
         for(int i=0; i<nextState.size(); i++) {
-            vector<Cell*> tempRow(rows);
-            generate(tempRow.begin(), tempRow.end(), [] { return new AgingCell(); });
+            vector<shared_ptr<Cell>> tempRow(rows);
+            generate(tempRow.begin(), tempRow.end(), [] { return make_shared<AgingCell>(); });
             nextState[i] = tempRow;
-            //for(auto e : tempRow) delete e;
         }
     }
     else {
         for(int i=0; i<nextState.size(); i++) {
-            vector<Cell*> tempRow(rows);
-            generate(tempRow.begin(), tempRow.end(), [] { return new Cell(); });
+            vector<shared_ptr<Cell>> tempRow(rows);
+            generate(tempRow.begin(), tempRow.end(), [] { return make_shared<Cell>(); });
             nextState[i] = tempRow;
-            //for(auto e : tempRow) delete e;
         }
     }
 
@@ -174,10 +172,6 @@ vector<vector<Cell*> > GameLogic::calculateNextStep(vector<vector<Cell*> > &curr
         }
     }
 
-    for(auto v : this->gameState) {
-        for(auto e : v) delete e;
-    }
-
     return nextState;
 }
 
@@ -219,21 +213,19 @@ void GameLogic::reload(GameWindow *gameWindow) {
     this->cellsInRow = gameWindow->getChosenNumberOfCellsInRow();
     this->columns = this->cellsInRow;
     this->rows = gameWindow->getChosenNumberOfCellsInColumn();
-    vector<vector<Cell*>> tempState(columns, vector<Cell*>(rows));
+    vector<vector<shared_ptr<Cell>>> tempState(columns, vector<shared_ptr<Cell>>(rows));
     if(gameWindow->isAgingChecked()) {
         for(int i=0; i<tempState.size(); i++) {
-            vector<Cell*> tempRow(rows);
-            generate(tempRow.begin(), tempRow.end(), [] { return new AgingCell(); });
+            vector<shared_ptr<Cell>> tempRow(rows);
+            generate(tempRow.begin(), tempRow.end(), [] { return make_shared<AgingCell>(); });
             tempState[i] = tempRow;
-            //for(auto e : tempRow) delete e;
         }
     }
     else {
         for(int i=0; i<tempState.size(); i++) {
-            vector<Cell*> tempRow(rows);
-            generate(tempRow.begin(), tempRow.end(), [] { return new Cell(); });
+            vector<shared_ptr<Cell>> tempRow(rows);
+            generate(tempRow.begin(), tempRow.end(), [] { return make_shared<Cell>(); });
             tempState[i] = tempRow;
-            //for(auto e : tempRow) delete e;
         }
     }
     this->gameState = tempState;
