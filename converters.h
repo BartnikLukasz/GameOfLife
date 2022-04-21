@@ -2,7 +2,6 @@
 #define CONVERTERS_H
 
 #include "agingcell.h"
-#include "livingcell.h"
 
 #include <QVector>
 #include <vector>

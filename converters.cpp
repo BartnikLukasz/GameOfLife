@@ -1,6 +1,5 @@
 #include "gamewindow.h"
 #include "converters.h"
-#include "livingcell.h"
 #include <vector>
 
 using namespace std;
